@@ -100,9 +100,11 @@ export const mapCSVData = (data, distanceUnit = "mi") => {
       workout.date = timestamp.substr(0, timestamp.indexOf(" "));
   
       // Workout Specific
-      // Cycling
+      console.log("Type", type);
       if (type === "Cycling"){
         enhanceCyclingData(effort, distanceUnit, workout);
+      } else if (type === "Running") {
+        enhanceRunningData(effort, distanceUnit, workout);
       }
 
       mappedData[type].push(workout);
@@ -144,6 +146,33 @@ function enhanceCyclingData(effort, distanceUnit, workout) {
     workout.distance = distance;
     workout.calories = parseFloat(effort["Calories Burned"]);
   }
+  return workout;
+}
+
+/**
+ * Populates the workout object with data specific to running
+ * @param {Object} effort 
+ * @param {String} distanceUnit 
+ * @param {Object} workout 
+ * @returns 
+ */
+function enhanceRunningData(effort, distanceUnit, workout) {
+  const output = parseInt(effort["Total Output"]);
+  const averageSpeed = parseInt(effort["Avg. Speed (mph)"]); // TODO: make this dynamic
+  const averagePace = parseInt(effort["Avg. Pace (min/" + distanceUnit + ")"]);
+  const averageIncline = parseFloat(effort["Avg. Incline"]);
+  const distance = parseFloat(effort["Distance (" + distanceUnit + ")"]);
+
+  // NaN/Null check for missing data from Peloton and Just Rides
+  if (output && averageSpeed && averagePace && averageIncline &&  distance && output > 0) {
+    workout.output = output;
+    workout.averageSpeed = averageSpeed;
+    workout.averageIncline = averageIncline;
+    workout.averagePace = averagePace;
+    workout.distance = distance;
+    workout.calories = parseFloat(effort["Calories Burned"]);
+  }
+
   return workout;
 }
 

@@ -1,7 +1,7 @@
 <script>
   import LineChart from "../baseTypes/LineChart.svelte";
-  import {averageOutputs} from "$lib/store/cyclingStore";
-  import {activeWorkoutType } from "$lib/store/store";
+  import {averageOutputs} from "$lib/store/outputStore";
+  import {activeData } from "$lib/store/store";
   import {getPlotPointsByDate} from "$lib/utils/chartUtils";
 
   const CHART_TITLE = "Average Output Per Minute";
@@ -50,8 +50,7 @@
   });
 </script>
 
-<!-- Only show for Cycling active data -->
-{#if $activeWorkoutType == "Cycling"}
+{#if $activeData.some(workout => workout.output)}
 <section>
   <div class="section-wrapper">
     {#if isError}

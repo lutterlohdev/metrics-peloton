@@ -3,10 +3,8 @@ import {
   organizeRidesByDuration,
   getAverageOutputs,
   getAverageOutputByRideDuration,
-  getAverageCadence,
-  getAverageResistance,
   getOrganizedRidesSortedByOutput,
-  getAverageOutputByRideType,
+  getAverageOutputByWorkoutType,
   getAverageOutputByInstructor,
   getAverageTotalOutputByDurationAndInstructor
 } from "$lib/utils/effortUtils";
@@ -15,7 +13,7 @@ import { filteredData, isError } from "./store";
 
  
 /**
- * Get cycling data from main CSV map
+ * Get running data from main CSV map
  */
 export const runningData = derived(
   [filteredData],
@@ -28,40 +26,25 @@ export const runningData = derived(
   }
 );
 
-
 /**
-* Store of average outputs of all rides
+* Store of average outputs of all runs
 */
 export const averageOutputs = derived(runningData, ($runningData) =>
  getAverageOutputs($runningData)
 );
 
 /**
-* Store of all FTP test ride average outputs
+* Store of the average incline for all filtered runs
 */
-export const ftpAverageOutputs = derived(ftpTestRides, ($ftpTestRides) =>
- getAverageOutputs($ftpTestRides, "watts")
-);
-
-/**
-* Store of the average cadences for all filtered rides
-*/
-export const averageCadence = derived(runningData, ($runningData) =>
- getAverageCadence($runningData)
-);
-
-/**
-* Store of the average resistances for all filtered rides
-*/
-export const averageResistance = derived(runningData, ($runningData) =>
- getAverageResistance($runningData)
+export const averageIncline = derived(runningData, ($runningData) =>
+ getAverageIncline($runningData)
 );
 
 /**
 * Store of the average outputs organized by ride type
 */
 export const averageOutputByRideType = derived(runningData, ($runningData) =>
- getAverageOutputByRideType($runningData)
+getAverageOutputByWorkoutType($runningData)
 );
 
 /**
@@ -72,14 +55,14 @@ export const averageOutputByInstructor = derived(runningData, ($runningData) =>
 );
 
 /**
-* Store of all filtered rides organized by ride duration
+* Store of all filtered runs organized by ride duration
 */
-export const organizedRidesByDuration = derived(runningData, ($runningData) => {
+export const organizedRunsByDuration = derived(runningData, ($runningData) => {
  try {
    return organizeRidesByDuration($runningData);
  } catch (e) {
    isError.set(true);
-   console.error("Could not parse data to organize the rides by length");
+   console.error("Could not parse data to organize the runs by length");
    return {};
  }
 });
@@ -88,31 +71,31 @@ export const organizedRidesByDuration = derived(runningData, ($runningData) => {
 * Store of average outputs by duration
 */
 export const averageOutputsByDuration = derived(
- organizedRidesByDuration,
- ($organizedRidesByDuration) => getAverageOutputByRideDuration($organizedRidesByDuration)
+ organizedRunsByDuration,
+ ($organizedRunsByDuration) => getAverageOutputByRideDuration($organizedRunsByDuration)
 );
 
 /**
-* Store of the rides sorted by output within keys of duration
+* Store of the runs sorted by output within keys of duration
 */
-export const organizedRidesSortedByOutput = derived(
- organizedRidesByDuration,
- ($organizedRidesByDuration) => {
+export const organizedRunsSortedByOutput = derived(
+ organizedRunsByDuration,
+ ($organizedRunsByDuration) => {
    try {
-     return getOrganizedRidesSortedByOutput($organizedRidesByDuration);
+     return getOrganizedRidesSortedByOutput($organizedRunsByDuration);
    } catch (e) {
      isError.set(true);
-     console.error("Could not parse data to organize the rides sorted by output");
+     console.error("Could not parse data to organize the runs sorted by output");
      return {};
    }
  }
 );
 
 export const averageTotalOutputByDurationAndInstructor = derived(
- organizedRidesByDuration,
- ($organizedRidesByDuration) => {
+ organizedRunsByDuration,
+ ($organizedRunsByDuration) => {
    try {
-     return getAverageTotalOutputByDurationAndInstructor($organizedRidesByDuration);
+     return getAverageTotalOutputByDurationAndInstructor($organizedRunsByDuration);
    } catch (e) {
      console.error("Could not parse data");
      return {};

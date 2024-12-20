@@ -346,15 +346,15 @@ export const getOrganizedRidesSortedByOutput = (rideData) => {
 };
 
 /**
- * Returns a sorted array of ride types alongside each's average output
- * @param {array} rideData Peloton ride data
- * @return {array} Sorted array of objects containing ride type and average output
+ * Returns a sorted array of workout types alongside each's average output
+ * @param {array} data Peloton data
+ * @return {array} Sorted array of objects containing workout type and average output
  */
-export const getAverageOutputByRideType = (rideData) => {
-  const groupedRides = groupBy(rideData, "type");
+export const getAverageOutputByWorkoutType = (data) => {
+  const groupedData = groupBy(data, "type");
   const averageOutputs = [];
-  Object.keys(groupedRides).forEach((key) => {
-    const average = getAverageFromArray(groupedRides[key], "averageOutput");
+  Object.keys(groupedData).forEach((key) => {
+    const average = getAverageFromArray(groupedData[key], "averageOutput");
     const result = {};
     result["type"] = key;
     result["averageOutput"] = average;

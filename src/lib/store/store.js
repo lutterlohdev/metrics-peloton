@@ -33,7 +33,7 @@ export const showSameDayWorkouts = writable(false);
 
 /**
  * Store for the strings from which to filter workout types based on workout title.
- * Initialized with ride types that would adversely effect calculating averages
+ * Initialized with ride types that would adversely affect calculating averages
  */
 export const titleFilters = writable([
   "Intervals & Arms",
@@ -94,21 +94,19 @@ export const filteredData = derived(
   }
 );
 
+/**
+ * Store with the unique ride types contained within the active data set
+ */
+export const workoutTypes = derived([mappedCSVData, activeWorkoutType], ([$mappedCSVData, $activeWorkoutType]) => {
+  return getUniqueWorkoutTypes($mappedCSVData[$activeWorkoutType])
+});
+
 export const activeData = derived(
   [filteredData, activeWorkoutType],
   ([$filteredData, $activeWorkoutType]) => {
     console.debug("Active Data for " + $activeWorkoutType, $filteredData[$activeWorkoutType]);
     return $filteredData[$activeWorkoutType];
   }
-);
-
-/**
- * Store with the unique ride types contained within the active data set
- */
-export const workoutTypes = derived([mappedCSVData, activeWorkoutType], ([$mappedCSVData, $activeWorkoutType]) => {
-    return getUniqueWorkoutTypes($mappedCSVData[$activeWorkoutType])
-}
-
 );
 
 

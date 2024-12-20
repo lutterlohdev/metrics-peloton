@@ -15,7 +15,7 @@ const {
   getAverageCadence,
   getAverageResistance,
   getOrganizedRidesSortedByOutput,
-  getAverageOutputByRideType,
+  getAverageOutputByWorkoutType,
   getAverageOutputByInstructor
 } = require("../../src/lib/utils/effortUtils");
 import {sampleData1} from "./sampleData";
@@ -310,9 +310,9 @@ describe("getOrganizedRidesSortedByOutput", () => {
   });
 });
 
-describe("getAverageOutputByRideType", () => {
+describe("getAverageOutputByWorkoutType", () => {
   it("should return an array of objects containing ride types and an average output number", () => {
-    const result = getAverageOutputByRideType(sampleData);
+    const result = getAverageOutputByWorkoutType(sampleData);
     result.forEach((item) => {
       expect(item).toHaveProperty("type");
       expect(item).toHaveProperty("averageOutput");

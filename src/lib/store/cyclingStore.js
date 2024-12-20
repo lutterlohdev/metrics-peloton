@@ -6,7 +6,7 @@ import {
   getAverageCadence,
   getAverageResistance,
   getOrganizedRidesSortedByOutput,
-  getAverageOutputByRideType,
+  getAverageOutputByWorkoutType,
   getAverageOutputByInstructor,
   getAverageTotalOutputByDurationAndInstructor
 } from "$lib/utils/effortUtils";
@@ -40,12 +40,7 @@ export const cyclingData = derived(
   }
 );
 
-/**
-* Store of average outputs of all rides
-*/
-export const averageOutputs = derived(cyclingData, ($cyclingData) =>
- getAverageOutputs($cyclingData)
-);
+
 
 /**
 * Store of all FTP test ride average outputs
@@ -66,13 +61,6 @@ export const averageCadence = derived(cyclingData, ($cyclingData) =>
 */
 export const averageResistance = derived(cyclingData, ($cyclingData) =>
  getAverageResistance($cyclingData)
-);
-
-/**
-* Store of the average outputs organized by ride type
-*/
-export const averageOutputByRideType = derived(cyclingData, ($cyclingData) =>
- getAverageOutputByRideType($cyclingData)
 );
 
 /**
