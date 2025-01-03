@@ -1,9 +1,12 @@
 <script>
-  export let percentage;
-  export let leftLabel;
-  export let rightLabel;
-  export let barLabel;
-  export let fillColor;
+  /** @type {{percentage: any, leftLabel: any, rightLabel: any, barLabel: any, fillColor: any}} */
+  let {
+    percentage,
+    leftLabel,
+    rightLabel,
+    barLabel,
+    fillColor
+  } = $props();
 </script>
 
 <div style="color:{fillColor}">

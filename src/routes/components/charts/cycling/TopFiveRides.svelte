@@ -1,8 +1,8 @@
 <script>
   import ProgressBar from "../baseTypes/ProgressBar.svelte";
   import {trimTitle} from "$lib/utils/stringUtils";
-  export let rides;
-  export let color;
+  /** @type {{rides: any, color: any}} */
+  let { rides, color } = $props();
 </script>
 
 {#each rides as ride}

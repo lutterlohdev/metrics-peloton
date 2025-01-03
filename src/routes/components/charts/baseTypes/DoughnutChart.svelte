@@ -3,14 +3,13 @@
   import Chart from "chart.js/auto";
   import {convertStringToID} from "$lib/utils/stringUtils";
 
-  export let title;
-  export let datasets;
-  export let chartReference = "";
+  /** @type {{title: any, datasets: any, chartReference?: string}} */
+  let { title, datasets, chartReference = $bindable() } = $props();
 
   const ERROR_MESSAGE = "An error occurred creating the Output Chart";
   const chartID = "chart-" + convertStringToID(title);
-  let isError = false;
-  let screenWidth = 1200;
+  let isError = $state(false);
+  let screenWidth = $state(1200);
 
   const config = {
     type: "doughnut",
@@ -48,7 +47,7 @@
 {#if isError}
   <p>{ERROR_MESSAGE}</p>
 {:else}
-  <div class="chart-wrapper"><canvas id={chartID} /></div>
+  <div class="chart-wrapper"><canvas id={chartID}></canvas></div>
 {/if}
 
 <style>

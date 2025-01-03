@@ -30,9 +30,9 @@
     };
   };
 
-  let datasets;
-  let isError = false;
-  let chartReference;
+  let datasets = $state();
+  let isError = $state(false);
+  let chartReference = $state();
   const ERROR_MESSAGE = "There was an error generating the output over time chart.";
 
   try {

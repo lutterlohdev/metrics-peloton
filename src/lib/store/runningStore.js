@@ -1,6 +1,6 @@
 import {derived} from "svelte/store";
 import {
-  organizeRidesByDuration,
+  organizeEffortsByDuration,
   getAverageOutputs,
   getAverageOutputByRideDuration,
   getOrganizedRidesSortedByOutput,
@@ -59,7 +59,7 @@ export const averageOutputByInstructor = derived(runningData, ($runningData) =>
 */
 export const organizedRunsByDuration = derived(runningData, ($runningData) => {
  try {
-   return organizeRidesByDuration($runningData);
+   return organizeEffortsByDuration($runningData);
  } catch (e) {
    isError.set(true);
    console.error("Could not parse data to organize the runs by length");

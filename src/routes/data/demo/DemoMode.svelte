@@ -2,7 +2,7 @@
   import {csvData} from "$lib/store/store.js";
   import demoData from "./demoData.json";
 
-  let y = 0;
+  let y = $state(0);
 
   const updateData = (json) => {
     try {
@@ -21,7 +21,7 @@
 
 <svelte:window bind:scrollY={y} />
 {#if !$csvData}
-<button class="footer-button" on:click={() => loadDemoMode()}
+<button class="footer-button" onclick={() => loadDemoMode()}
   ><span class="sr-only">Activate </span>Demo Mode</button
 >
 {/if}

@@ -20,7 +20,7 @@
       <label class="option-label">
         <input
           type="checkbox"
-          on:change={(e) => handleChange(type, e.target.checked)}
+          onchange={(e) => handleChange(type, e.target.checked)}
           checked={$titleFilters.includes(type) ? "checked" : false}
           class="option-field"
         />

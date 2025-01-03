@@ -20,7 +20,7 @@
       {#if $filteredData[workoutType].length > 0}
         <button
           type="button"
-          on:click={() => handleActiveWorkoutTypeChange(workoutType)}
+          onclick={() => handleActiveWorkoutTypeChange(workoutType)}
           style={"background:" +
             getColorBasedOnArrayLengthAndIndex(Object.keys($filteredData).length, i)}
           >

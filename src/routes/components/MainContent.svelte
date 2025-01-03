@@ -26,14 +26,14 @@
     <TotalsSection />
     <ClassesTakenByType />
     <OutputOverTime />
-    <AverageOutput />
+    <!-- <AverageOutput />
     <FTP />
-    <ClassesTakenByInstructor />
+    <ClassesTakenByInstructor /> -->
     <!-- <AverageOutputByInstructor /> Hiding this for now-->
-    <AverageTotalOutputByInstructor />
+    <!-- <AverageTotalOutputByInstructor />
     <AverageCadenceVsResistance />
     <AverageOutputByRideType />
-    <TopFiveSection />
+    <TopFiveSection /> -->
   {:else}
     <InfoMessage
       >Upload your Peloton rides to see your output over time, averages, top rides, and more!</InfoMessage

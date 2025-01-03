@@ -1,9 +1,11 @@
 <script>
   import {slide} from "svelte/transition";
+  /** @type {{children?: import('svelte').Snippet}} */
+  let { children } = $props();
 </script>
 
 <p transition:slide>
-  <slot />
+  {@render children?.()}
 </p>
 
 <style>

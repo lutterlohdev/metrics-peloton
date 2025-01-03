@@ -41,12 +41,14 @@
   <div class="section-wrapper">
     <h2>Average Total Output by Instructor</h2>
     <table cellspacing="0">
+      <tbody>
       <tr>
         <td />
         {#each Object.keys($averageTotalOutputByDurationAndInstructor) as duration}
           <th>{duration} Min</th>
         {/each}
       </tr>
+    </tbody>
       {#each uniqueInstructors as instructor}
         <tr>
           <th>{instructor}</th>

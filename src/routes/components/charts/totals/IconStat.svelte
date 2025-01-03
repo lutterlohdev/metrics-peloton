@@ -1,7 +1,6 @@
 <script>
-  export let statNumber;
-  export let iconFile;
-  export let statTitle;
+  /** @type {{statNumber: any, iconFile: any, statTitle: any}} */
+  let { statNumber, iconFile, statTitle } = $props();
 </script>
 
 <div>

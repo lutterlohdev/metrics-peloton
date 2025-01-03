@@ -25,9 +25,9 @@
     };
   };
 
-  let datasets;
-  let chartReference;
-  let isError = false;
+  let datasets = $state();
+  let chartReference = $state();
+  let isError = $state(false);
   const ERROR_MESSAGE = "There was an error generating the " + CHART_TITLE + " chart.";
 
   try {

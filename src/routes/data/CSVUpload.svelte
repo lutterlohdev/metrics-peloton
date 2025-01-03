@@ -1,11 +1,13 @@
 <script>
+  import { preventDefault } from 'svelte/legacy';
+
   import {onMount} from "svelte";
   import {csvData, isError, distanceUnit, activeWorkoutType} from "$lib/store/store.js";
   import {csvToJson, getDistanceUnit, validateCSV} from "$lib/utils/fileUtils.js";
 
-  let files;
+  let files = $state();
   // let errorStatus = false;
-  let y = 0;
+  let y = $state(0);
 
   onMount(async () => {
     const localStorageData = localStorage.getItem("savedData");
@@ -63,7 +65,7 @@
     </div>
     <div class="right">
       <h2>CSV Upload</h2>
-      <form on:submit|preventDefault={upload}>
+      <form onsubmit={preventDefault(upload)}>
         <label> CSV Upload: <input required type="file" bind:files /> </label>
         <div><button class="normal-button" type="submit">See My Metrics</button></div>
         <p>

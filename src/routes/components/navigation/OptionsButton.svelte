@@ -2,7 +2,7 @@
   import {isOptionsSidebarOpen as isOpen} from "$lib/store/interactionStore.js";
 </script>
 
-<button type="button" on:click={() => (isOpen.set($isOpen = !$isOpen))} class:$isOpen
+<button type="button" onclick={() => (isOpen.set($isOpen = !$isOpen))} class:$isOpen
   ><span class="sr-only">Options</span></button
 >
 

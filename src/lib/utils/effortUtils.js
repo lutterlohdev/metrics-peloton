@@ -58,39 +58,39 @@ export const filterWorkoutsByDate = (workouts, startDate, endDate) => {
 };
 
 /**
- * Returns an array of ride objects that begin with the given duration
- * @param {array} rideData Peloton ride data
- * @param {string} duration duration of rides to return (ie. 30)
- * @return {array} Array of ride objects that begin with the given duration
+ * Returns an array of effort objects that begin with the given duration
+ * @param {array} data Peloton data
+ * @param {string} duration duration of efforts to return (ie. 30)
+ * @return {array} Array of effort objects that begin with the given duration
  */
-export const getRidesByDuration = (rideData, duration) => {
-  return rideData.filter((ride) => ride.title.startsWith(duration));
+export const getEffortsByDuration = (data, duration) => {
+  return data.filter((effort) => effort.title.startsWith(duration));
 };
 
 /**
- * Returns an object containing ride data mapped by duration keys
- * @param {array} rideData Peloton ride data
- * @return {object} An object with keys that match the unique ride durations
+ * Returns an object containing effort data mapped by duration keys
+ * @param {array} data Peloton data
+ * @return {object} An object with keys that match the unique durations
  */
-export const organizeRidesByDuration = (rideData) => {
-  const rides = {};
+export const organizeEffortsByDuration = (data) => {
+  const efforts = {};
 
-  const uniqueRideDurations = [
+  const uniqueDurations = [
     ...new Set(
-      rideData.map((ride) => {
-        if (ride.duration) {
-          return ride.duration;
+      data.map((effort) => {
+        if (effort.duration) {
+          return effort.duration;
         }
-        throw new Error("One or more rides did not include duration.");
+        throw new Error("One or more efforts did not include duration.");
       })
     )
   ];
 
-  uniqueRideDurations.forEach((duration) => {
-    rides[duration.toString()] = getRidesByDuration(rideData, duration);
+  uniqueDurations.forEach((duration) => {
+    efforts[duration.toString()] = getEffortsByDuration(data, duration);
   });
 
-  return rides;
+  return efforts;
 };
 
 /**

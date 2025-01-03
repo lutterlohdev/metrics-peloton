@@ -12,4 +12,4 @@
 </script>
 
 <h3>Manage Data</h3>
-<button class="normal-button" type="button" on:click={clearData}>Clear My Data</button>
+<button class="normal-button" type="button" onclick={clearData}>Clear My Data</button>

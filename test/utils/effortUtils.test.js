@@ -2,8 +2,8 @@ const {
   filterByTitle,
   filterWorkoutsByDate,
   getLongestWorkout,
-  getRidesByDuration,
-  organizeRidesByDuration,
+  getEffortsByDuration,
+  organizeEffortsByDuration,
   getUniqueWorkoutTypes,
   getHighestOutputWorkout,
   getHighestOutputRidesByDuration,
@@ -66,24 +66,24 @@ describe("filterByTitle", () => {
   });
 });
 
-describe("getRidesByDuration", () => {
+describe("getEffortsByDuration", () => {
   it("should return all rides that start with the given length", () => {
     const rideLength = 30;
-    const result = getRidesByDuration(sampleData, rideLength);
+    const result = getEffortsByDuration(sampleData, rideLength);
     result.forEach((element) => {
       expect(element.title.startsWith(rideLength)).toBe(true);
     });
   });
   it("should return no rides if none match the given length", () => {
     const rideLength = 60;
-    const result = getRidesByDuration(sampleData, rideLength);
+    const result = getEffortsByDuration(sampleData, rideLength);
     expect(result).toHaveLength(0);
   });
 });
 
-describe("organizeRidesByDuration", () => {
+describe("organizeEffortsByDuration", () => {
   it("should organize ride arrays in an object by length", () => {
-    const organizedRides = organizeRidesByDuration(sampleData);
+    const organizedRides = organizeEffortsByDuration(sampleData);
     expect(Object.keys(organizedRides).length).toBe(3);
     expect(organizedRides[20].length).toBe(2);
     expect(organizedRides[30].length).toBe(4);
@@ -95,12 +95,12 @@ describe("organizeRidesByDuration", () => {
     });
   });
   it("should handle an empty array gracefully", () => {
-    expect(organizeRidesByDuration([])).toMatchObject({});
+    expect(organizeEffortsByDuration([])).toMatchObject({});
   });
   it("should throw an error if data does not include duration", () => {
     const badData = [...sampleData, {title: "30 Min I dont have a duration"}];
     expect(() => {
-      organizeRidesByDuration(badData);
+      organizeEffortsByDuration(badData);
     }).toThrowError();
   });
 });
@@ -134,7 +134,7 @@ describe("getHighestOutputWorkout", () => {
 
 describe("getHighestOutputRidesByDuration", () => {
   it("should return the best rides by length", () => {
-    const result = getHighestOutputRidesByDuration(organizeRidesByDuration(sampleData));
+    const result = getHighestOutputRidesByDuration(organizeEffortsByDuration(sampleData));
 
     // 45 Minute Ride
     expect(result[2]).toMatchObject(sampleData[0]);
@@ -226,7 +226,7 @@ describe("filterSameDayWorkouts", () => {
 
 describe("getAverageOutputByRideDuration", () => {
   it("should organize ride arrays in an object by length", () => {
-    const organizedRides = organizeRidesByDuration(sampleData);
+    const organizedRides = organizeEffortsByDuration(sampleData);
     const result = getAverageOutputByRideDuration(organizedRides);
 
     expect(result).toHaveLength(3);
@@ -294,7 +294,7 @@ describe("getAverageResistance", () => {
 
 describe("getOrganizedRidesSortedByOutput", () => {
   it("should return the organized rides sorted by output", () => {
-    const data = organizeRidesByDuration(sampleData);
+    const data = organizeEffortsByDuration(sampleData);
     const result = getOrganizedRidesSortedByOutput(data);
     const keys = Object.keys(result);
 

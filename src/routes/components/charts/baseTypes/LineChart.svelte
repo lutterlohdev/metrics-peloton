@@ -3,16 +3,16 @@
   import Chart from "chart.js/auto";
   import "chartjs-adapter-moment";
   import chartTrendline from "chartjs-plugin-trendline";
-  import {convertStringToID} from "$lib/utils/stringUtils";
 
-  export let title;
-  export let datasets;
-  export let isDarkMode = false;
-  export let chartReference = "";
+  /** @type {{title: any, datasets: any, isDarkMode?: boolean, chartReference?: string}} */
+  let {
+    title,
+    datasets = $bindable(),
+    isDarkMode = false
+  } = $props();
+  let canvas;
   const ERROR_MESSAGE = "An error occurred creating the line chart";
-  const chartID = "chart-" + convertStringToID(title);
-  let isError = false;
-  let screenWidth = 0;
+  let screenWidth = $state(0);
   const gridColor = isDarkMode ? "rgba(239,239,239,.1)" : "#e5e5e5";
   const tickColor = isDarkMode ? "#efefef" : "#444";
   const config = {
@@ -64,36 +64,44 @@
       maintainAspectRatio: false
     }
   };
+  let chart;
 
   try {
     config.data = datasets;
   } catch (e) {
-    isError = true;
+    // isError = true;
     console.error(ERROR_MESSAGE, e);
   }
 
+  
   onMount(async () => {
     try {
       Chart.register({
         chartTrendline
       });
-      const ctx = document.getElementById(chartID);
+      const ctx = canvas.getContext('2d');
       if (screenWidth < 768) {
         Chart.defaults.elements.point.radius = 0;
         Chart.defaults.elements.line.borderWidth = 2;
       }
 
-      chartReference = new Chart(ctx, config);
+      chart = new Chart(ctx, config);
     } catch (e) {
-      isError = true;
+      // isError = true;
       console.error(ERROR_MESSAGE, e);
     }
+    $effect(() => {
+      config.data = datasets;
+      if (chart) {
+        chart.update();
+      }
+    });
   });
 </script>
 
 <svelte:window bind:innerWidth={screenWidth} />
-{#if isError}
+<!-- {#if isError}
   <p>{ERROR_MESSAGE}</p>
-{:else}
-  <div class="chart-wrapper"><canvas id={chartID} /></div>
-{/if}
+{:else} -->
+  <div class="chart-wrapper"><canvas bind:this={canvas}></canvas></div>
+<!-- {/if} -->

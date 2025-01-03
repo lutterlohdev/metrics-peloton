@@ -100,7 +100,6 @@ export const mapCSVData = (data, distanceUnit = "mi") => {
       workout.date = timestamp.substr(0, timestamp.indexOf(" "));
   
       // Workout Specific
-      console.log("Type", type);
       if (type === "Cycling"){
         enhanceCyclingData(effort, distanceUnit, workout);
       } else if (type === "Running") {
@@ -164,13 +163,15 @@ function enhanceRunningData(effort, distanceUnit, workout) {
   const distance = parseFloat(effort["Distance (" + distanceUnit + ")"]);
 
   // NaN/Null check for missing data from Peloton and Just Rides
-  if (output && averageSpeed && averagePace && averageIncline &&  distance && output > 0) {
+  if (output && averageSpeed && averagePace && averageIncline && distance && output > 0) {
     workout.output = output;
     workout.averageSpeed = averageSpeed;
     workout.averageIncline = averageIncline;
     workout.averagePace = averagePace;
     workout.distance = distance;
     workout.calories = parseFloat(effort["Calories Burned"]);
+  } else {
+    console.error("Missing data for running workout", workout);
   }
 
   return workout;

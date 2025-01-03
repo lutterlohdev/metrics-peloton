@@ -9,7 +9,7 @@
 </script>
 
 <div>
-  <button class="link-button" type="button" on:click={showModal}>Instructions</button>
+  <button class="link-button" type="button" onclick={showModal}>Instructions</button>
 </div>
 
 <style>

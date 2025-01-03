@@ -1,8 +1,10 @@
 <script>
+  import { preventDefault } from 'svelte/legacy';
+
   import {dateFilter} from "$lib/store/store.js";
 
-  let startDate = $dateFilter.startDate;
-  let endDate = $dateFilter.endDate;
+  let startDate = $state($dateFilter.startDate);
+  let endDate = $state($dateFilter.endDate);
 
   const updateDateFilters = () => {
     dateFilter.set({startDate, endDate});
@@ -13,7 +15,7 @@
   <h3>Filter By Date</h3>
   <p>Start Date defaults to 9 months from the latest ride.</p>
   <p>Note: If you go too far back, the amount of rides may render the chart unreadable.</p>
-  <form on:submit|preventDefault={updateDateFilters}>
+  <form onsubmit={preventDefault(updateDateFilters)}>
     <div class="label-container">
       <label class="option-label">
         Start Date <input

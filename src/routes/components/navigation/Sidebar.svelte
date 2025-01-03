@@ -1,8 +1,8 @@
 <script>
   import {fly} from "svelte/transition";
 
-  export let isOpen = false;
-  export let side = "right";
+  /** @type {{isOpen?: boolean, side?: string, children?: import('svelte').Snippet}} */
+  let { isOpen = $bindable(false), side = "right", children } = $props();
 
   const handleSidebar = () => (isOpen = !isOpen);
 </script>
@@ -10,10 +10,10 @@
 {#if isOpen}
   <aside transition:fly={{x: side == "right" ? 200 : -200, duration: 500}} class:open={isOpen} class:left={side == "left"}>
     <div>
-      <slot></slot>
+      {@render children?.()}
     </div>
   </aside>
-  <div role="none" class="overlay" on:click={handleSidebar} on:keypress={handleSidebar} />
+  <div role="none" class="overlay" onclick={handleSidebar} onkeypress={handleSidebar}></div>
 {/if}
 
 <style>
