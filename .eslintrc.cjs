@@ -9,11 +9,10 @@ module.exports = {
   env: {
     browser: true,
     es2017: true,
-    node: true,
-    "jest/globals": true
+    node: true
   },
   rules: {
     "svelte/no-at-html-tags": 0
   },
-  plugins: ["jest"]
+  plugins: []
 };
