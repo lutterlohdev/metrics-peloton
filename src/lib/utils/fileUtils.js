@@ -91,23 +91,36 @@ export const mapCSVData = (data, distanceUnit = "mi") => {
     let workoutSpecificData = data.filter(effort => type === effort[FITNESS_DISCIPLINE]);
     workoutSpecificData.forEach((effort) => {
       const timestamp = effort["Workout Timestamp"];
-  
+
       const workout = {};
       workout.instructor = effort["Instructor Name"] ? effort["Instructor Name"] : "None/Self";
       workout.duration = parseInt(effort["Length (minutes)"]);
-      workout.type = effort["Type"] ? effort["Type"] : "Other (Lanebreak, etc)"; // Support for Lanebreak, etc
+      workout.type = effort["Type"] ? effort["Type"] : "Other (Lanebreak, etc)";
       workout.title = effort["Title"];
       workout.date = timestamp.substr(0, timestamp.indexOf(" "));
-  
-      // Workout Specific
-      // Cycling
-      if (type === "Cycling"){
+
+      // // Add all available metrics generically
+      // // Copy all numeric and string fields except for known metadata columns
+      // const skipFields = [
+      //   "Workout Timestamp", "Instructor Name", "Length (minutes)", "Fitness Discipline", "Type", "Title", "Class Timestamp"
+      // ];
+      // Object.keys(effort).forEach((key) => {
+      //   if (!skipFields.includes(key) && effort[key] !== "" && effort[key] != null) {
+      //     // Try to parse as number, otherwise keep as string
+      //     const num = Number(effort[key]);
+      //     workout[key] = isNaN(num) ? effort[key] : num;
+      //   }
+      // });
+
+      // Discipline-specific enhancements
+      if (type === "Cycling") {
         enhanceCyclingData(effort, distanceUnit, workout);
-      }
+      } else if (type === "Running") {
+        enhanceRunningData(effort, distanceUnit, workout);
+      } // Add more disciplines as needed
 
       mappedData[type].push(workout);
-      }
-    );
+    });
   });
   
   console.debug("Mapped CSV Data", mappedData);
@@ -123,27 +136,44 @@ const isJustRide = (title) => {
   return title.toLowerCase().includes("just ride");
 };
 
+
 /**
  * Populates the workout object with data specific to cycling
- * @param {Object} effort 
- * @param {String} distanceUnit 
- * @param {Object} workout 
- * @returns 
  */
 function enhanceCyclingData(effort, distanceUnit, workout) {
   const output = parseInt(effort["Total Output"]);
   const averageWatts = parseInt(effort["Avg. Watts"]);
   const distance = parseFloat(effort["Distance (" + distanceUnit + ")"]);
-
-  // NaN/Null check for missing data from Peloton and Just Rides
   if (output && averageWatts && distance && output > 0 && !isJustRide(effort["Title"])) {
     workout.output = output;
     workout.averageOutput = averageWatts;
     workout.averageCadence = effort["Avg. Cadence (RPM)"];
-    workout.averageResistance = effort["Avg. Resistance"].replace("%", "");
+    workout.averageResistance = effort["Avg. Resistance"] ? effort["Avg. Resistance"].replace("%", "") : undefined;
     workout.distance = distance;
     workout.calories = parseFloat(effort["Calories Burned"]);
   }
+  return workout;
+}
+
+/**
+ * Populates the workout object with data specific to running
+ */
+function enhanceRunningData(effort, distanceUnit, workout) {
+  const output = parseInt(effort["Total Output"]);
+  const distance = parseFloat(effort["Distance (" + distanceUnit + ")"]);
+  const avgPace = effort["Avg. Pace (min/mi)"] ? effort["Avg. Pace (min/mi)"] : effort["Avg. Pace (min/km)"];
+  if (distance && distance > 0) {
+    workout.distance = distance;
+  }
+  if (avgPace) {
+    workout.averagePace = avgPace;
+  }
+  if(output && output > 0){
+    workout.output = output;
+  }
+  workout.calories = parseFloat(effort["Calories Burned"]);
+  workout.averageIncline = effort["Avg. Incline"];
+  workout.averageSpeed = effort["Avg. Speed (mph)"] ? effort["Avg. Speed (mph)"] : effort["Avg. Speed (km/h)"];
   return workout;
 }
 

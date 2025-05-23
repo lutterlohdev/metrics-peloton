@@ -146,30 +146,13 @@ describe("getHighestOutputRidesByDuration", () => {
 });
 
 describe("getAverageOutputs", () => {
-  it("should average output per minute by ride", () => {
+  it("should return the average output for all workouts", () => {
     const result = getAverageOutputs(sampleData);
-    expect(result).toHaveLength(sampleData.length);
-    expect(result[0].average).toBe(sampleData[0].output / sampleData[0].duration);
-    expect(result[1].average).toBe(sampleData[1].output / sampleData[1].duration);
-    expect(result[2].average).toBe(sampleData[2].output / sampleData[2].duration);
-    expect(result[3].average).toBe(sampleData[3].output / sampleData[3].duration);
-    expect(result[4].average).toBe(sampleData[4].output / sampleData[4].duration);
-    expect(result[5].average).toBe(sampleData[5].output / sampleData[5].duration);
-    expect(result[6].average).toBe(sampleData[6].output / sampleData[6].duration);
-    expect(result[7].average).toBe(sampleData[7].output / sampleData[7].duration);
-    expect(result[8].average).toBe(sampleData[8].output / sampleData[8].duration);
-    expect(result[9].average).toBe(sampleData[9].output / sampleData[9].duration);
-
-    expect(result[0].title).toBe(sampleData[0].title);
-    expect(result[1].title).toBe(sampleData[1].title);
-    expect(result[2].title).toBe(sampleData[2].title);
-    expect(result[3].title).toBe(sampleData[3].title);
-    expect(result[4].title).toBe(sampleData[4].title);
-    expect(result[5].title).toBe(sampleData[5].title);
-    expect(result[6].title).toBe(sampleData[6].title);
-    expect(result[7].title).toBe(sampleData[7].title);
-    expect(result[8].title).toBe(sampleData[8].title);
-    expect(result[9].title).toBe(sampleData[9].title);
+    // Should be a number
+    expect(typeof result).toBe("number");
+    // Should match manual calculation
+    const expected = sampleData.reduce((sum, w) => sum + w.output, 0) / sampleData.length;
+    expect(result).toBeCloseTo(expected);
   });
 });
 
@@ -321,13 +304,15 @@ describe("getAverageOutputByRideType", () => {
 });
 
 describe("getAverageOutputByInstructor", () => {
-  it("should return an array of objects containing instructors and an avergae output number", () => {
+  it("should return an object with instructor names as keys and average outputs as values", () => {
     const result = getAverageOutputByInstructor(sampleData);
-    result.forEach((item) => {
-      expect(item).toHaveProperty("instructor");
-      expect(item).toHaveProperty("averageOutput");
+    expect(typeof result).toBe("object");
+    // Should have keys for each instructor
+    const instructors = [...new Set(sampleData.map(w => w.instructor || w["Instructor Name"]))];
+    instructors.forEach((instructor) => {
+      expect(result).toHaveProperty(instructor);
+      expect(typeof result[instructor]).toBe("number");
     });
-    expect(result.length).toBe(3);
   });
 });
 

@@ -1,21 +1,24 @@
 <script>
-  import {averageOutputsByDuration} from "$lib/store/cyclingStore";
+  import {averageOutputsByDuration} from "$lib/store/workoutStore";
   import {activeData, activeWorkoutType} from "$lib/store/store.js";
 </script>
 
-<!-- Only use this for data that has output -->
-{#if $activeData.some(workout => workout.output) && $activeWorkoutType == "Cycling"}
-<div>
-  <h2>Average Outputs By Ride Length</h2>
-  <ul>
-    {#each $averageOutputsByDuration as average}
-      <li style="background-color:{average.color}">
-        <span>{average.duration} Min</span><span class="sr-only">:</span>
-        {average.value}
-      </li>
-    {/each}
-  </ul>
-</div>
+
+<!-- Defensive: Only show chart if data is a non-empty array with output -->
+{#if Array.isArray($activeData) && $activeData.length > 0 && $activeData.some(workout => workout.output)}
+  {#if Array.isArray($averageOutputsByDuration) && $averageOutputsByDuration.length > 0}
+    <div>
+      <h2>Average Outputs By Workout Length</h2>
+      <ul>
+        {#each $averageOutputsByDuration as average}
+          <li style="background-color:{average.color}">
+            <span>{average.duration} Min</span><span class="sr-only">:</span>
+            {average.value}
+          </li>
+        {/each}
+      </ul>
+    </div>
+  {/if}
 {/if}
 
 <style>

@@ -1,40 +1,51 @@
 <script>
   import {onMount} from "svelte";
-  import {organizedRidesSortedByOutput} from "$lib/store/cyclingStore";
+  import {organizedWorkoutsSortedByOutput} from "$lib/store/workoutStore";
   import TopFiveRides from "./TopFiveRides.svelte";
   import {getColorBasedOnArrayLengthAndIndex} from "$lib/utils/colorUtils";
   import { activeData, activeWorkoutType } from "$lib/store/store";
 
-  let durations = Object.keys($organizedRidesSortedByOutput).reverse();
+  let durations = Object.keys($organizedWorkoutsSortedByOutput).reverse();
 
   onMount(async () => {
-    organizedRidesSortedByOutput.subscribe((value) => {
+    organizedWorkoutsSortedByOutput.subscribe((value) => {
       durations = Object.keys(value).reverse();
     });
   });
 </script>
 
-<!-- Only show for active data with outputs -->
-{#if $activeData.some(workout => workout.output) && $activeWorkoutType == "Cycling"}
-<section class="top-five-container">
-  {#each durations.reverse() as duration, i}
-    <div class="top-five-card">
-      <div class="section-wrapper">
-        <h2 style="color:{getColorBasedOnArrayLengthAndIndex(durations.length, i)}">
-          Top
-          {duration}
-          Min Rides
-        </h2>
-        <div>
-          <TopFiveRides
-            rides={$organizedRidesSortedByOutput[duration].slice(0, 5)}
-            color={getColorBasedOnArrayLengthAndIndex(durations.length, i)}
-          />
-        </div>
-      </div>
+
+<!-- Defensive: Only show for active data with outputs and valid durations -->
+{#if Array.isArray($activeData) && $activeData.length > 0 && $activeData.some(workout => workout.output)}
+  {#if Array.isArray(durations) && durations.length > 0}
+    <section class="top-five-container">
+      {#each durations as duration, i}
+        {#if Array.isArray($organizedWorkoutsSortedByOutput[duration]) && $organizedWorkoutsSortedByOutput[duration].filter(ride => ride.output != null).length > 0}
+          <div class="top-five-card">
+            <div class="section-wrapper">
+              <h2 style="color:{getColorBasedOnArrayLengthAndIndex(durations.length, i)}">
+                Top
+                {duration}
+                Min Workouts
+              </h2>
+              <div>
+                <TopFiveRides
+                  rides={$organizedWorkoutsSortedByOutput[duration].filter(ride => ride.output != null).slice(0, 5)}
+                  color={getColorBasedOnArrayLengthAndIndex(durations.length, i)}
+                />
+              </div>
+            </div>
+          </div>
+        {/if}
+      {/each}
+    </section>
+  {/if}
+{:else}
+  <section class="top-five-container">
+    <div class="section-wrapper">
+      <p>No data available for Top 5 Workouts.</p>
     </div>
-  {/each}
-</section>
+  </section>
 {/if}
 
 <style>

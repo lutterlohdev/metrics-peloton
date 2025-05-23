@@ -127,3 +127,5 @@ public
 
 # Local
 vite.config.js.timestamp*
+examples/*
+tasks.md

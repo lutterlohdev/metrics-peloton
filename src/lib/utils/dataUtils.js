@@ -9,12 +9,20 @@ export const getAverageFromArray = (array, key) => {
   if (array.length === 0) {
     return sum;
   }
-  array.forEach((data) => {
-    const value = data[key];
-    if (value != null) {
-      sum = sum + value;
-    }
-  });
+  if (key) {
+    array.forEach((data) => {
+      const value = data[key];
+      if (value != null) {
+        sum = sum + value;
+      }
+    });
+  } else {
+    array.forEach((value) => {
+      if (value != null) {
+        sum = sum + value;
+      }
+    });
+  }
   return Math.round(sum / array.length);
 };
 
@@ -58,20 +66,15 @@ export const sliceArrayByGivenMax = (array, max) => {
  * @return {array} Unique Values
  */
 export const getUniqueValuesFromDataArrayByAttribute = (array, attribute) => {
+  if (!Array.isArray(array)) {
+    console.error("getUniqueValuesFromDataArrayByAttribute: input is not an array", array);
+    return [];
+  }
   const values = [
     ...new Set(
       array
-        .filter((item) => item[attribute] != "") // Needed to filter out scenic rides without an instructor
-        .map((item) => {
-          if (item[attribute]) {
-            return item[attribute];
-          }
-          console.error(
-            "Attribute (" + attribute + ") for the following item returned null or undefined",
-            item
-          );
-          throw new Error("Error getting values for '" + attribute + "'");
-        })
+        .filter((item) => item && item[attribute] != null && item[attribute] !== "")
+        .map((item) => item[attribute])
     )
   ];
   return values;

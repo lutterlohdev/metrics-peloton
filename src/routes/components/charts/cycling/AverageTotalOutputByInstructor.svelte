@@ -1,10 +1,10 @@
 <script>
-  import {averageTotalOutputByDurationAndInstructor, cyclingData} from "$lib/store/cyclingStore";
+  import {averageTotalOutputByDurationAndInstructor, workoutData} from "$lib/store/workoutStore";
   import {getColorBasedOnArrayLengthAndIndex, getOpacityByIndex} from "$lib/utils/colorUtils";
   import {getUniqueValuesFromDataArrayByAttribute} from "$lib/utils/dataUtils.js";
   import {activeData, activeWorkoutType} from "$lib/store/store.js";
 
-  const uniqueInstructors = getUniqueValuesFromDataArrayByAttribute($cyclingData, "instructor");
+  const uniqueInstructors = getUniqueValuesFromDataArrayByAttribute($workoutData, "Instructor Name");
 
   const getCells = (instructor) => {
     let output = "";
@@ -35,27 +35,34 @@
   };
 </script>
 
-<!-- Only use this for data that has output -->
-{#if $activeData && $activeData.some(workout => workout.output)  && $activeWorkoutType == "Cycling"}
-<section>
-  <div class="section-wrapper">
-    <h2>Average Total Output by Instructor</h2>
-    <table cellspacing="0">
-      <tr>
-        <td />
-        {#each Object.keys($averageTotalOutputByDurationAndInstructor) as duration}
-          <th>{duration} Min</th>
-        {/each}
-      </tr>
-      {#each uniqueInstructors as instructor}
-        <tr>
-          <th>{instructor}</th>
-          {@html getCells(instructor)}
-        </tr>
-      {/each}
-    </table>
-  </div>
-</section>
+
+<!-- Defensive: Only show chart if data is a non-empty array with output -->
+{#if Array.isArray($activeData) && $activeData.length > 0 && $activeData.some(workout => workout.output)}
+  {#if Object.keys($averageTotalOutputByDurationAndInstructor).length > 0 && Array.isArray(uniqueInstructors) && uniqueInstructors.length > 0}
+    <section>
+      <div class="section-wrapper">
+        <h2>Average Total Output by Instructor</h2>
+        <table cellspacing="0">
+          <thead>
+            <tr>
+              <td />
+              {#each Object.keys($averageTotalOutputByDurationAndInstructor) as duration}
+                <th>{duration} Min</th>
+              {/each}
+            </tr>
+          </thead>
+          <tbody>
+          {#each uniqueInstructors as instructor}
+            <tr>
+              <th>{instructor}</th>
+              {@html getCells(instructor)}
+            </tr>
+          {/each}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  {/if}
 {/if}
 
 <style>

@@ -1,6 +1,6 @@
 <script>
   import PolarArea from "../baseTypes/PolarArea.svelte";
-  import {averageOutputByInstructor} from "$lib/store/cyclingStore";
+  import {averageOutputByInstructor} from "$lib/store/workoutStore";
   import {getColorArrayBasedOnLength} from "$lib/utils/colorUtils";
 
   const getOutputs = (data) => {
@@ -55,21 +55,25 @@
   });
 </script>
 
-<section>
-  <div class="section-wrapper">
-    <div class="left">
-      <h2>Average Output (During Rides) by Instructor</h2>
-    </div>
 
-    <div class="right">
-      {#if isError}
-        <p>{ERROR_MESSAGE}</p>
-      {:else}
-        <PolarArea title="Average Output by Instructor" {datasets} bind:chartReference />
-      {/if}
+<!-- Defensive: Only show chart if data is a non-empty array -->
+{#if Array.isArray($averageOutputByInstructor) && $averageOutputByInstructor.length > 0}
+  <section>
+    <div class="section-wrapper">
+      <div class="left">
+        <h2>Average Output (During Rides) by Instructor</h2>
+      </div>
+
+      <div class="right">
+        {#if isError}
+          <p>{ERROR_MESSAGE}</p>
+        {:else}
+          <PolarArea title="Average Output by Instructor" {datasets} bind:chartReference />
+        {/if}
+      </div>
     </div>
-  </div>
-</section>
+  </section>
+{/if}
 
 <style>
   .section-wrapper {

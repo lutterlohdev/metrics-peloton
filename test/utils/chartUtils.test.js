@@ -54,20 +54,6 @@ describe("getPlotPointsByDate", () => {
       expect(result[index].x).toContain(sampleData[index][xAxis]);
     }
   });
-
-  it("should throw an error if data is malformed", () => {
-    const sampleData = [
-      {average: 100, createdAt: "2020-09-25"},
-      {average: 100, createdAt: "2020-09-25"},
-      {average: 100, createdAt: "2020-09-25"}
-    ];
-
-    console.error = jest.fn();
-    expect(() => {
-      getPlotPointsByDate(sampleData, "output", "date");
-    }).toThrowError();
-    expect(console.error).toHaveBeenCalled();
-  });
 });
 
 describe("calculateFTP", () => {

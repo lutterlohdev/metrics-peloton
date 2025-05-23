@@ -3,9 +3,137 @@ import {
   sortArrayByAttributeInObject,
   getUniqueValuesFromDataArrayByAttribute
 } from "./dataUtils";
-import {getColorBasedOnArrayLengthAndIndex} from "./colorUtils";
-import {isDateSameOrAfterGivenDate, isDateSameOrBeforeGivenDate} from "./dateUtils";
-import {trimTitle} from "./stringUtils";
+import { getColorBasedOnArrayLengthAndIndex } from "./colorUtils";
+import { isDateSameOrAfterGivenDate, isDateSameOrBeforeGivenDate } from "./dateUtils";
+import { trimTitle } from "./stringUtils";
+
+// --- GENERIC WORKOUT UTILS ---
+
+/**
+ * Organize workouts by duration (generic, not just rides)
+ */
+export const organizeWorkoutsByDuration = (workoutData) => {
+  console.debug("organizedWorkoutsByDuration Input", workoutData);
+  const workouts = {};
+  const uniqueDurations = [
+    ...new Set(
+      workoutData.map((w) => {
+        if (w.duration) return w.duration;
+        throw new Error("One or more workouts did not include duration.");
+      })
+    )
+  ];
+  console.debug("Unique Durations", uniqueDurations);
+
+  uniqueDurations.forEach((duration) => {
+    workouts[duration.toString()] = workoutData.filter((w) => w.duration === duration);
+  });
+  console.debug("organizedWorkoutsByDuration Output", workouts);
+  return workouts;
+};
+
+/**
+ * Get average outputs for all workouts
+ */
+
+// Generic: returns a single average value for a set of workouts
+export const getAverageOutputs = (workouts) => {
+  if (!workouts || workouts.length === 0) return 0;
+  const outputs = workouts.map((w) =>
+    w.output != null ? Number(w.output) : Number(w["Total Output"]) || 0
+  );
+  return getAverageFromArray(outputs);
+};
+
+/**
+ * Get average of a specific metric for all workouts
+ */
+export const getAverageMetric = (workouts, metric) => {
+  if (!workouts || workouts.length === 0) return 0;
+  const values = workouts.map((w) => Number(w[metric]) || 0);
+  return getAverageFromArray(values);
+};
+
+/**
+ * Get average output by duration
+ */
+export const getAverageOutputByDuration = (organizedWorkouts) => {
+  const result = {};
+  Object.keys(organizedWorkouts).forEach((duration) => {
+    result[duration] = getAverageOutputs(organizedWorkouts[duration]);
+  });
+  return result;
+};
+
+/**
+ * Get average output by workout type
+ */
+export const getAverageOutputByType = (workouts) => {
+  const byType = {};
+  workouts.forEach((w) => {
+    const type = w.type || w["Type"] || "Unknown";
+    if (!byType[type]) byType[type] = [];
+    byType[type].push(w);
+  });
+  const result = {};
+  Object.keys(byType).forEach((type) => {
+    result[type] = getAverageOutputs(byType[type]);
+  });
+  return result;
+};
+
+/**
+ * Get average output by instructor
+ */
+export const getAverageOutputByInstructor = (workouts) => {
+  const byInstructor = {};
+  workouts.forEach((w) => {
+    const instructor = w["Instructor Name"] || w.instructor || "Unknown";
+    if (!byInstructor[instructor]) byInstructor[instructor] = [];
+    byInstructor[instructor].push(w);
+  });
+  const result = {};
+  Object.keys(byInstructor).forEach((instructor) => {
+    result[instructor] = getAverageOutputs(byInstructor[instructor]);
+  });
+  return result;
+};
+
+/**
+ * Get average total output by duration and instructor
+ */
+export const getAverageTotalOutputByDurationAndInstructor = (organizedWorkouts) => {
+  const result = {};
+  Object.keys(organizedWorkouts).forEach((duration) => {
+    const byInstructor = {};
+    organizedWorkouts[duration].forEach((w) => {
+      const instructor = w["Instructor Name"] || w.instructor || "Unknown";
+      if (!byInstructor[instructor]) byInstructor[instructor] = [];
+      byInstructor[instructor].push(w);
+    });
+    result[duration] = {};
+    Object.keys(byInstructor).forEach((instructor) => {
+      result[duration][instructor] = getAverageOutputs(byInstructor[instructor]);
+    });
+  });
+  return result;
+};
+
+/**
+ * Get workouts sorted by output within each duration
+ */
+export const getOrganizedWorkoutsSortedByOutput = (organizedWorkouts) => {
+  const result = {};
+  Object.keys(organizedWorkouts).forEach((duration) => {
+    result[duration] = organizedWorkouts[duration].slice().sort((a, b) => {
+      const aOut = Number(a.output || a["Total Output"]) || 0;
+      const bOut = Number(b.output || b["Total Output"]) || 0;
+      return bOut - aOut;
+    });
+  });
+  console.log("Sorted organized rides by output", result)
+  return result;
+};
 
 /**
  * Filters Peloton Workout data by the given filters on titles
@@ -15,8 +143,12 @@ import {trimTitle} from "./stringUtils";
  */
 
 export const filterByTitle = (workouts, filters) => {
+  // Defensive: always return an array, and only filter if workouts is an array
+  if (!Array.isArray(workouts) || !workouts.length) {
+    return [];
+  }
   const filteredWorkouts = workouts.filter((workout) => {
-    if (!workout.title){
+    if (!workout || !workout.title) {
       return false;
     }
     let isFilteredOut = false;
@@ -27,7 +159,6 @@ export const filterByTitle = (workouts, filters) => {
       }
     });
     return !isFilteredOut;
-
   });
   return filteredWorkouts;
 };
@@ -176,19 +307,6 @@ export const energy = {
  * @param {energy} units kj (default) or watts
  * @return {array}  Average Outputs
  */
-export const getAverageOutputs = (rideData, units = energy.KILOJOULES) => {
-  const outputs = [];
-  rideData.forEach((ride) => {
-    const averageOutputPerMinute = ride.output / ride.duration;
-    const output = {};
-    output["average"] = units == energy.KILOJOULES ? averageOutputPerMinute : ride.averageOutput;
-    output["title"] = ride.title;
-    output["createdAt"] = ride.date;
-    outputs.push(output);
-  });
-
-  return outputs;
-};
 
 /**
  * Gets an array of dates that had multiple workouts
@@ -369,63 +487,7 @@ export const getAverageOutputByRideType = (rideData) => {
  * @param {array} rideData Peloton ride data
  * @return {array} Sorted array of objects containing average output by instructor
  */
-export const getAverageOutputByInstructor = (rideData) => {
-  let outputs = [];
-  const uniqueInstructors = getUniqueValuesFromDataArrayByAttribute(rideData, "instructor");
 
-  uniqueInstructors.forEach((instructor) => {
-    if (instructor !== "") {
-      const output = {};
-      output.instructor = instructor;
-      const ridesByInstructor = rideData.filter((ride) => ride.instructor === instructor);
-      output.count = ridesByInstructor.length;
-      output.averageOutput = getAverageFromArray(ridesByInstructor, "averageOutput");
-      outputs.push(output);
-    }
-  });
-
-  // Sort by count
-  outputs = sortArrayByAttributeInObject(outputs, "averageOutput");
-  return outputs;
-};
-
-/**
- * Returns a sorted array of average total outputs by instructor
- * @param {array} rideData Peloton ride data
- * @return {array} Sorted array of objects containing average output by instructor
- */
-export const getAverageTotalOutputByInstructor = (rideData) => {
-  let outputs = [];
-  const uniqueInstructors = getUniqueValuesFromDataArrayByAttribute(rideData, "instructor");
-
-  uniqueInstructors.forEach((instructor) => {
-    if (instructor !== "") {
-      const output = {};
-      output.instructor = instructor;
-      const ridesByInstructor = rideData.filter((ride) => ride.instructor === instructor);
-      output.count = ridesByInstructor.length;
-      output.averageTotalOutput = getAverageFromArray(ridesByInstructor, "output");
-      outputs.push(output);
-    }
-  });
-  // Sort by count
-  outputs = sortArrayByAttributeInObject(outputs, "averageTotalOutput");
-  return outputs;
-};
-
-export const getAverageTotalOutputByDurationAndInstructor = (rideData) => {
-  const result = {};
-
-  Object.keys(rideData).forEach(duration => {
-    result[duration] = getAverageTotalOutputByInstructor(rideData[duration]);
-    // Remove empty durations
-    if (result[duration].length < 1){
-      delete result[duration];
-    }
-  })
-
-  return result;
-};
 
 /**
  * Groups objects in an array by a given attribute

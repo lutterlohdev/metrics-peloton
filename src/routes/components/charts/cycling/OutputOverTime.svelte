@@ -1,6 +1,6 @@
 <script>
   import LineChart from "../baseTypes/LineChart.svelte";
-  import {organizedRidesByDuration} from "$lib/store/cyclingStore";
+  import {organizedWorkoutsByDuration} from "$lib/store/workoutStore";
   import {getPlotPointsByDate} from "$lib/utils/chartUtils";
   import AverageOutputsByLength from "./AverageOutputByLength.svelte";
   import {getColorBasedOnArrayLengthAndIndex} from "$lib/utils/colorUtils";
@@ -42,13 +42,13 @@
   const ERROR_MESSAGE = "There was an error generating the output over time chart.";
 
   try {
-    datasets = getDatasets($organizedRidesByDuration);
+    datasets = getDatasets($organizedWorkoutsByDuration);
   } catch (e) {
     isError = true;
     console.error(ERROR_MESSAGE, e);
   }
 
-  organizedRidesByDuration.subscribe((value) => {
+  organizedWorkoutsByDuration.subscribe((value) => {
     try {
       if (chartReference) {
         chartReference.data = getDatasets(value);
@@ -61,19 +61,22 @@
   });
 </script>
 
-<!-- Only use this for data that has output -->
-{#if $activeData.some(workout => workout.output)}
-<section>
-  <div class="section-wrapper">
-    {#if isError}
-      <p>{ERROR_MESSAGE}</p>
-    {:else}
-      <h2>Output Over Time</h2>
-      <LineChart title="Output Over Time" {datasets} bind:chartReference />
-      <AverageOutputsByLength />
-    {/if}
-  </div>
-</section>
+
+<!-- Defensive: Only show chart if data is a non-empty array with output -->
+{#if Array.isArray($activeData) && $activeData.length > 0 && $activeData.some(workout => workout.output)}
+  <section>
+    <div class="section-wrapper">
+      {#if isError}
+        <p>{ERROR_MESSAGE}</p>
+      {:else if Object.keys($organizedWorkoutsByDuration).length === 0}
+        <p>No data available for Output Over Time.</p>
+      {:else}
+        <h2>Output Over Time</h2>
+        <LineChart title="Output Over Time" {datasets} bind:chartReference />
+        <AverageOutputsByLength />
+      {/if}
+    </div>
+  </section>
 {/if}
 
 <style>

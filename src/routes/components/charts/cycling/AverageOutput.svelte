@@ -1,6 +1,6 @@
 <script>
   import LineChart from "../baseTypes/LineChart.svelte";
-  import {averageOutputs} from "$lib/store/cyclingStore";
+  import {averageOutputs} from "$lib/store/workoutStore";
   import {activeWorkoutType } from "$lib/store/store";
   import {getPlotPointsByDate} from "$lib/utils/chartUtils";
 
@@ -50,19 +50,20 @@
   });
 </script>
 
-<!-- Only show for Cycling active data -->
-{#if $activeWorkoutType == "Cycling"}
-<section>
-  <div class="section-wrapper">
-    {#if isError}
-      <p>{ERROR_MESSAGE}</p>
-    {:else}
-      <h2>{CHART_TITLE}</h2>
-      <LineChart title="CHART_TITLE" {datasets} isDarkMode="true" bind:chartReference />
-    {/if}
-  </div>
-</section>
-{/if}
+
+<!-- Defensive: Only show chart if data is a non-empty array with output -->
+  {#if Array.isArray($averageOutputs) && $averageOutputs.length > 0}
+    <section>
+      <div class="section-wrapper">
+        {#if isError}
+          <p>{ERROR_MESSAGE}</p>
+        {:else}
+          <h2>{CHART_TITLE}</h2>
+          <LineChart title="CHART_TITLE" {datasets} isDarkMode="true" bind:chartReference />
+        {/if}
+      </div>
+    </section>
+  {/if}
 
 <style>
   section {

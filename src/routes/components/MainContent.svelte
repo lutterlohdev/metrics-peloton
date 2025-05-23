@@ -1,9 +1,9 @@
 <script>
   import CSVUpload from "../data/CSVUpload.svelte";
   import OutputOverTime from "./charts/cycling/OutputOverTime.svelte";
-  import FTP from "./charts/cycling/FTP.svelte";
+  // import FTP from "./charts/cycling/FTP.svelte"; // Cycling-specific, consider generic version or remove
   import AverageOutput from "./charts/cycling/AverageOutput.svelte";
-  import AverageCadenceVsResistance from "./charts/cycling/AverageCadenceVsResistance.svelte";
+  // import AverageCadenceVsResistance from "./charts/cycling/AverageCadenceVsResistance.svelte"; // Cycling-specific, consider generic version or remove
   // import AverageOutputByInstructor from "../charts/charts/AverageOutputByInstructor.svelte";
   import ClassesTakenByInstructor from "./charts/general/ClassesTakenByInstructor.svelte";
   import ErrorMessage from "./messaging/ErrorMessage.svelte";
@@ -27,11 +27,11 @@
     <ClassesTakenByType />
     <OutputOverTime />
     <AverageOutput />
-    <FTP />
+    <!-- <FTP /> -->
     <ClassesTakenByInstructor />
     <!-- <AverageOutputByInstructor /> Hiding this for now-->
     <AverageTotalOutputByInstructor />
-    <AverageCadenceVsResistance />
+    <!-- <AverageCadenceVsResistance /> -->
     <AverageOutputByRideType />
     <TopFiveSection />
   {:else}

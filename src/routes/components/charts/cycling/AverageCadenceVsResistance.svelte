@@ -75,23 +75,26 @@
   });
 </script>
 
-<!-- Only show for Cycling for now-->
+
+<!-- Defensive: Only show chart if data is a non-empty array -->
 {#if $activeWorkoutType == "Cycling"}
-<section>
-  <div class="section-wrapper">
-    {#if isError}
-      <p>{ERROR_MESSAGE}</p>
-    {:else}
-      <h2>Average Cadence vs Resistance</h2>
-      <LineChart
-        title="Average Cadence vs Resistance"
-        {datasets}
-        isDarkMode="true"
-        bind:chartReference
-      />
-    {/if}
-  </div>
-</section>
+  {#if (Array.isArray($averageCadence) && $averageCadence.length > 0) || (Array.isArray($averageResistance) && $averageResistance.length > 0)}
+    <section>
+      <div class="section-wrapper">
+        {#if isError}
+          <p>{ERROR_MESSAGE}</p>
+        {:else}
+          <h2>Average Cadence vs Resistance</h2>
+          <LineChart
+            title="Average Cadence vs Resistance"
+            {datasets}
+            isDarkMode="true"
+            bind:chartReference
+          />
+        {/if}
+      </div>
+    </section>
+  {/if}
 {/if}
 
 <style>

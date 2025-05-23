@@ -30,18 +30,23 @@ export const calculateFTP = (number) => {
  * @return {array} Plot points for ChartJs where x-axis is date and y-axis is some other variable
  */
 export const getPlotPointsByDate = (data, yAttribute, dateAttribute, titleAttribute = "title") => {
-  return data.map((object) => {
-    if (object[yAttribute] != null && object[dateAttribute] != null) {
+  if (!Array.isArray(data)) {
+    console.error("getPlotPointsByDate: data is not an array", data);
+    return [];
+  }
+  const points = [];
+  data.forEach((object) => {
+    if (object && object[yAttribute] != null && object[dateAttribute] != null) {
       const date = getReadableDate(object[dateAttribute]);
       const yAxis = getRoundNumber(object[yAttribute]);
       const title = object[titleAttribute];
-      const plotPoint = createPlotPoint(date, yAxis, title);
-      return plotPoint;
+      points.push(createPlotPoint(date, yAxis, title));
+    } else {
+      console.warn(
+        `getPlotPointsByDate: Skipping object missing '${yAttribute}' or '${dateAttribute}':`,
+        object
+      );
     }
-    console.error(
-      `One or more of the given attributes '${yAttribute}', '${dateAttribute}' was null or empty for the following object: `,
-      object
-    );
-    throw new Error("Data does not match given parameters to generate plot points");
   });
+  return points;
 };
