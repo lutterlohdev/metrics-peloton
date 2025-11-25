@@ -3,9 +3,9 @@ import {
   sortArrayByAttributeInObject,
   getUniqueValuesFromDataArrayByAttribute
 } from "./dataUtils";
-import {getColorBasedOnArrayLengthAndIndex} from "./colorUtils";
-import {isDateSameOrAfterGivenDate, isDateSameOrBeforeGivenDate} from "./dateUtils";
-import {trimTitle} from "./stringUtils";
+import { getColorBasedOnArrayLengthAndIndex } from "./colorUtils";
+import { isDateSameOrAfterGivenDate, isDateSameOrBeforeGivenDate } from "./dateUtils";
+import { trimTitle } from "./stringUtils";
 
 /**
  * Filters Peloton Workout data by the given filters on titles
@@ -19,14 +19,7 @@ export const filterByTitle = (workouts, filters) => {
     if (!workout.title) {
       return false;
     }
-    let isFilteredOut = false;
-    filters.forEach((filter) => {
-      if (workout.title.includes(filter)) {
-        // default is to filter out matching
-        isFilteredOut = true;
-      }
-    });
-    return !isFilteredOut;
+    return !filters.some((filter) => workout.title.includes(filter));
   });
   return filteredWorkouts;
 };
@@ -38,7 +31,11 @@ export const filterByTitle = (workouts, filters) => {
  * @return {array} filtered data
  */
 export const filterWorkoutsByDate = (workouts, startDate, endDate) => {
-  if (startDate && endDate && workouts.length > 2) {
+  if (
+    startDate &&
+    endDate &&
+    workouts.length > 2
+  ) {
     const originalLength = workouts.length;
     let filteredWorkouts = workouts.filter((ride) => {
       return (
@@ -70,8 +67,6 @@ export const getRidesByDuration = (rideData, duration) => {
  * @return {object} An object with keys that match the unique ride durations
  */
 export const organizeRidesByDuration = (rideData) => {
-  const rides = {};
-
   const uniqueRideDurations = [
     ...new Set(
       rideData.map((ride) => {
@@ -83,9 +78,10 @@ export const organizeRidesByDuration = (rideData) => {
     )
   ];
 
-  uniqueRideDurations.forEach((duration) => {
-    rides[duration.toString()] = getRidesByDuration(rideData, duration);
-  });
+  const rides = uniqueRideDurations.reduce((accumulator, duration) => {
+    accumulator[duration.toString()] = getRidesByDuration(rideData, duration);
+    return accumulator;
+  }, {});
 
   return rides;
 };
@@ -119,9 +115,7 @@ export const getUniqueWorkoutTypes = (workouts) => {
 export const getHighestOutputWorkout = (workouts) => {
   if (workouts && workouts.length > 0) {
     const bestTotalWork = Math.max(...workouts.map((workout) => workout.output), 0);
-    const bestWorkout = workouts.find(function (workout) {
-      return workout.output == bestTotalWork;
-    });
+    const bestWorkout = workouts.find((workout) => workout.output == bestTotalWork);
 
     return bestWorkout;
   }
@@ -137,9 +131,7 @@ export const getHighestOutputWorkout = (workouts) => {
 export const getLongestWorkout = (workouts) => {
   if (workouts && workouts.length > 0) {
     const longestWorkoutDuration = Math.max(...workouts.map((workout) => workout.duration), 0);
-    const longestWorkout = workouts.find(function (workout) {
-      return workout.duration == longestWorkoutDuration;
-    });
+    const longestWorkout = workouts.find((workout) => workout.duration == longestWorkoutDuration);
 
     return longestWorkout;
   }
@@ -152,14 +144,10 @@ export const getLongestWorkout = (workouts) => {
  * @return {object}
  */
 export const getHighestOutputRidesByDuration = (rideData) => {
-  const bestRides = [];
   if (rideData) {
-    Object.keys(rideData).forEach((key) => {
-      const ride = getHighestOutputWorkout(rideData[key]);
-      bestRides.push(ride);
-    });
+    return Object.keys(rideData).map((key) => getHighestOutputWorkout(rideData[key]));
   }
-  return bestRides;
+  return [];
 };
 
 export const energy = {
@@ -174,17 +162,14 @@ export const energy = {
  * @return {array}  Average Outputs
  */
 export const getAverageOutputs = (rideData, units = energy.KILOJOULES) => {
-  const outputs = [];
-  rideData.forEach((ride) => {
+  return rideData.map((ride) => {
     const averageOutputPerMinute = ride.output / ride.duration;
-    const output = {};
-    output["average"] = units == energy.KILOJOULES ? averageOutputPerMinute : ride.averageOutput;
-    output["title"] = ride.title;
-    output["createdAt"] = ride.date;
-    outputs.push(output);
+    return {
+      average: units == energy.KILOJOULES ? averageOutputPerMinute : ride.averageOutput,
+      title: ride.title,
+      createdAt: ride.date
+    };
   });
-
-  return outputs;
 };
 
 /**
@@ -193,17 +178,11 @@ export const getAverageOutputs = (rideData, units = energy.KILOJOULES) => {
  * @return {array} Dates containing multiple workouts
  */
 export const getDatesWithMultipleWorkouts = (workouts) => {
-  const datesWithMultipleWorkouts = [];
   const uniqueDates = getUniqueValuesFromDataArrayByAttribute(workouts, "date");
   // Determine which dates have multiple rides
-  uniqueDates.forEach((date) => {
-    const ridesOnSpecificDate = workouts.filter((workout) => {
-      return workout.date === date;
-    });
-
-    if (ridesOnSpecificDate.length > 1) {
-      datesWithMultipleWorkouts.push(date);
-    }
+  const datesWithMultipleWorkouts = uniqueDates.filter((date) => {
+    const ridesOnSpecificDate = workouts.filter((workout) => workout.date === date);
+    return ridesOnSpecificDate.length > 1;
   });
   return datesWithMultipleWorkouts;
 };
@@ -219,13 +198,11 @@ export const filterSameDayWorkouts = (workouts) => {
 
     // Find best workout for days with multiple workouts
     datesWithMultipleWorkouts.forEach((date) => {
-      const workoutsOnSpecificDay = workouts.filter((workout) => {
-        return date == workout.date;
-      });
+      const workoutsOnSpecificDay = workouts.filter((workout) => date == workout.date);
 
       let bestWorkout;
 
-      if (workoutsOnSpecificDay.some((workout) => workout.output)) {
+      if (workoutsOnSpecificDay.some(workout => workout.output)) {
         bestWorkout = getHighestOutputWorkout(workoutsOnSpecificDay);
       } else {
         bestWorkout = getLongestWorkout(workoutsOnSpecificDay);
@@ -275,14 +252,14 @@ export const getClassesTakenByInstructor = (rideData) => {
   try {
     const uniqueInstructors = getUniqueValuesFromDataArrayByAttribute(rideData, "instructor");
 
-    uniqueInstructors.forEach((instructor) => {
-      if (instructor !== "") {
-        const value = {};
-        value.instructor = instructor;
-        value.count = rideData.filter((ride) => ride.instructor === instructor).length;
-        classesTakenByInstructor.push(value);
-      }
-    });
+    const instructorCounts = uniqueInstructors
+      .filter((instructor) => instructor !== "")
+      .map((instructor) => ({
+        instructor,
+        count: rideData.filter((ride) => ride.instructor === instructor).length
+      }));
+
+    classesTakenByInstructor.push(...instructorCounts);
 
     // Sort by count
     classesTakenByInstructor = sortArrayByAttributeInObject(classesTakenByInstructor, "count");
@@ -299,14 +276,11 @@ export const getClassesTakenByInstructor = (rideData) => {
  * @return {array} Average cadences alongside date
  */
 export const getAverageCadence = (rideData) => {
-  const cadences = [];
-  rideData.forEach((ride) => {
-    const cadence = {};
-    cadence["average"] = ride.averageCadence;
-    cadence["createdAt"] = ride.date;
-    cadence["title"] = ride.title;
-    cadences.push(cadence);
-  });
+  const cadences = rideData.map((ride) => ({
+    average: ride.averageCadence,
+    createdAt: ride.date,
+    title: ride.title
+  }));
 
   return cadences;
 };
@@ -317,14 +291,11 @@ export const getAverageCadence = (rideData) => {
  * @return {array} Average resistances alongside date
  */
 export const getAverageResistance = (rideData) => {
-  const resistances = [];
-  rideData.forEach((ride) => {
-    const resistance = {};
-    resistance["average"] = ride.averageResistance;
-    resistance["createdAt"] = ride.date;
-    resistance["title"] = ride.title;
-    resistances.push(resistance);
-  });
+  const resistances = rideData.map((ride) => ({
+    average: ride.averageResistance,
+    createdAt: ride.date,
+    title: ride.title
+  }));
   return resistances;
 };
 
@@ -349,14 +320,10 @@ export const getOrganizedRidesSortedByOutput = (rideData) => {
  */
 export const getAverageOutputByRideType = (rideData) => {
   const groupedRides = groupBy(rideData, "type");
-  const averageOutputs = [];
-  Object.keys(groupedRides).forEach((key) => {
-    const average = getAverageFromArray(groupedRides[key], "averageOutput");
-    const result = {};
-    result["type"] = key;
-    result["averageOutput"] = average;
-    averageOutputs.push(result);
-  });
+  const averageOutputs = Object.keys(groupedRides).map((key) => ({
+    type: key,
+    averageOutput: getAverageFromArray(groupedRides[key], "averageOutput")
+  }));
   const sortedAverageOutputs = sortArrayByAttributeInObject(averageOutputs, "averageOutput");
   return sortedAverageOutputs;
 };
@@ -367,19 +334,18 @@ export const getAverageOutputByRideType = (rideData) => {
  * @return {array} Sorted array of objects containing average output by instructor
  */
 export const getAverageOutputByInstructor = (rideData) => {
-  let outputs = [];
   const uniqueInstructors = getUniqueValuesFromDataArrayByAttribute(rideData, "instructor");
 
-  uniqueInstructors.forEach((instructor) => {
-    if (instructor !== "") {
-      const output = {};
-      output.instructor = instructor;
+  let outputs = uniqueInstructors
+    .filter((instructor) => instructor !== "")
+    .map((instructor) => {
       const ridesByInstructor = rideData.filter((ride) => ride.instructor === instructor);
-      output.count = ridesByInstructor.length;
-      output.averageOutput = getAverageFromArray(ridesByInstructor, "averageOutput");
-      outputs.push(output);
-    }
-  });
+      return {
+        instructor,
+        count: ridesByInstructor.length,
+        averageOutput: getAverageFromArray(ridesByInstructor, "averageOutput")
+      };
+    });
 
   // Sort by count
   outputs = sortArrayByAttributeInObject(outputs, "averageOutput");
@@ -392,34 +358,31 @@ export const getAverageOutputByInstructor = (rideData) => {
  * @return {array} Sorted array of objects containing average output by instructor
  */
 export const getAverageTotalOutputByInstructor = (rideData) => {
-  let outputs = [];
   const uniqueInstructors = getUniqueValuesFromDataArrayByAttribute(rideData, "instructor");
 
-  uniqueInstructors.forEach((instructor) => {
-    if (instructor !== "") {
-      const output = {};
-      output.instructor = instructor;
+  let outputs = uniqueInstructors
+    .filter((instructor) => instructor !== "")
+    .map((instructor) => {
       const ridesByInstructor = rideData.filter((ride) => ride.instructor === instructor);
-      output.count = ridesByInstructor.length;
-      output.averageTotalOutput = getAverageFromArray(ridesByInstructor, "output");
-      outputs.push(output);
-    }
-  });
+      return {
+        instructor,
+        count: ridesByInstructor.length,
+        averageTotalOutput: getAverageFromArray(ridesByInstructor, "output")
+      };
+    });
   // Sort by count
   outputs = sortArrayByAttributeInObject(outputs, "averageTotalOutput");
   return outputs;
 };
 
 export const getAverageTotalOutputByDurationAndInstructor = (rideData) => {
-  const result = {};
-
-  Object.keys(rideData).forEach((duration) => {
-    result[duration] = getAverageTotalOutputByInstructor(rideData[duration]);
-    // Remove empty durations
-    if (result[duration].length < 1) {
-      delete result[duration];
+  const result = Object.keys(rideData).reduce((accumulator, duration) => {
+    const averageTotalOutput = getAverageTotalOutputByInstructor(rideData[duration]);
+    if (averageTotalOutput.length >= 1) {
+      accumulator[duration] = averageTotalOutput;
     }
-  });
+    return accumulator;
+  }, {});
 
   return result;
 };
@@ -432,7 +395,7 @@ export const getAverageTotalOutputByDurationAndInstructor = (rideData) => {
  * @return {object}
  */
 const groupBy = (arr, property) => {
-  return arr.reduce(function (result, x) {
+  return arr.reduce((result, x) => {
     if (!result[x[property]]) {
       result[x[property]] = [];
     }
