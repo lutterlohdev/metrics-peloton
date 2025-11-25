@@ -5,16 +5,13 @@
  * @return {number} Average
  */
 export const getAverageFromArray = (array, key) => {
-  let sum = 0;
   if (array.length === 0) {
-    return sum;
+    return 0;
   }
-  array.forEach((data) => {
+  const sum = array.reduce((accumulator, data) => {
     const value = data[key];
-    if (value != null) {
-      sum = sum + value;
-    }
-  });
+    return value != null ? accumulator + value : accumulator;
+  }, 0);
   return Math.round(sum / array.length);
 };
 
@@ -87,12 +84,9 @@ export const getTotalByAttribute = (array, key) => {
   if (!array) {
     return 0;
   }
-  let sum = 0;
-  array.forEach((element) => {
+  const sum = array.reduce((accumulator, element) => {
     const value = element[key];
-    if (value) {
-      sum = sum + value;
-    }
-  });
+    return value ? accumulator + value : accumulator;
+  }, 0);
   return Math.round(sum);
 };
