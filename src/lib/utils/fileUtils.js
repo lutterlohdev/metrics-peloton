@@ -4,7 +4,7 @@
  * @return {json} Parsed CSV as JSON
  */
 export const csvToJson = (csv) => {
-  const lines = csv.replace(/\n\r/g, '\n').split('\n');
+  const lines = csv.replace(/\n\r/g, "\n").split("\n");
   const result = [];
   const headers = lines[0].split(",");
 
@@ -44,7 +44,9 @@ export const validateCSV = (data = []) => {
       return true;
     }
   }
-  console.error("CSV is not valid. Could not find 'Workout Timestamp', 'Total Output', and 'Fitness Discipline' as column headers.");
+  console.error(
+    "CSV is not valid. Could not find 'Workout Timestamp', 'Total Output', and 'Fitness Discipline' as column headers."
+  );
   throw new Error("CSV is not valid");
 };
 
@@ -77,39 +79,38 @@ export const mapCSVData = (data, distanceUnit = "mi") => {
   console.debug("Original Data Upload", data);
   const mappedData = {};
   const FITNESS_DISCIPLINE = "Fitness Discipline";
-  
+
   // Remove undefined columns
-  data = data.filter(effort => typeof effort[FITNESS_DISCIPLINE] === "string");
-  
+  data = data.filter((effort) => typeof effort[FITNESS_DISCIPLINE] === "string");
+
   // Unique Workout Types
-  const workoutTypes = [... new Set(data.map(effort => effort[FITNESS_DISCIPLINE]))];
+  const workoutTypes = [...new Set(data.map((effort) => effort[FITNESS_DISCIPLINE]))];
 
   // Map generic data for each workout
   workoutTypes.forEach((type) => {
     mappedData[type] = [];
 
-    let workoutSpecificData = data.filter(effort => type === effort[FITNESS_DISCIPLINE]);
+    let workoutSpecificData = data.filter((effort) => type === effort[FITNESS_DISCIPLINE]);
     workoutSpecificData.forEach((effort) => {
       const timestamp = effort["Workout Timestamp"];
-  
+
       const workout = {};
       workout.instructor = effort["Instructor Name"] ? effort["Instructor Name"] : "None/Self";
       workout.duration = parseInt(effort["Length (minutes)"]);
       workout.type = effort["Type"] ? effort["Type"] : "Other (Lanebreak, etc)"; // Support for Lanebreak, etc
       workout.title = effort["Title"];
       workout.date = timestamp.substr(0, timestamp.indexOf(" "));
-  
+
       // Workout Specific
       // Cycling
-      if (type === "Cycling"){
+      if (type === "Cycling") {
         enhanceCyclingData(effort, distanceUnit, workout);
       }
 
       mappedData[type].push(workout);
-      }
-    );
+    });
   });
-  
+
   console.debug("Mapped CSV Data", mappedData);
   return mappedData;
 };
@@ -125,10 +126,10 @@ const isJustRide = (title) => {
 
 /**
  * Populates the workout object with data specific to cycling
- * @param {Object} effort 
- * @param {String} distanceUnit 
- * @param {Object} workout 
- * @returns 
+ * @param {Object} effort
+ * @param {String} distanceUnit
+ * @param {Object} workout
+ * @returns
  */
 function enhanceCyclingData(effort, distanceUnit, workout) {
   const output = parseInt(effort["Total Output"]);
@@ -146,4 +147,3 @@ function enhanceCyclingData(effort, distanceUnit, workout) {
   }
   return workout;
 }
-

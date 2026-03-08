@@ -1,7 +1,7 @@
 <script>
   import LineChart from "../baseTypes/LineChart.svelte";
   import {averageOutputs} from "$lib/store/cyclingStore";
-  import {activeWorkoutType } from "$lib/store/store";
+  import {activeWorkoutType} from "$lib/store/store";
   import {getPlotPointsByDate} from "$lib/utils/chartUtils";
 
   const CHART_TITLE = "Average Output Per Minute";
@@ -52,16 +52,16 @@
 
 <!-- Only show for Cycling active data -->
 {#if $activeWorkoutType == "Cycling"}
-<section>
-  <div class="section-wrapper">
-    {#if isError}
-      <p>{ERROR_MESSAGE}</p>
-    {:else}
-      <h2>{CHART_TITLE}</h2>
-      <LineChart title="CHART_TITLE" {datasets} isDarkMode="true" bind:chartReference />
-    {/if}
-  </div>
-</section>
+  <section>
+    <div class="section-wrapper">
+      {#if isError}
+        <p>{ERROR_MESSAGE}</p>
+      {:else}
+        <h2>{CHART_TITLE}</h2>
+        <LineChart title="CHART_TITLE" {datasets} isDarkMode="true" bind:chartReference />
+      {/if}
+    </div>
+  </section>
 {/if}
 
 <style>

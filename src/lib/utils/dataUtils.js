@@ -84,7 +84,7 @@ export const getUniqueValuesFromDataArrayByAttribute = (array, attribute) => {
  * @return {number} Sum
  */
 export const getTotalByAttribute = (array, key) => {
-  if(!array){
+  if (!array) {
     return 0;
   }
   let sum = 0;

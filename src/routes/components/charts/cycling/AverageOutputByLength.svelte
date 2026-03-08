@@ -4,18 +4,18 @@
 </script>
 
 <!-- Only use this for data that has output -->
-{#if $activeData.some(workout => workout.output) && $activeWorkoutType == "Cycling"}
-<div>
-  <h2>Average Outputs By Ride Length</h2>
-  <ul>
-    {#each $averageOutputsByDuration as average}
-      <li style="background-color:{average.color}">
-        <span>{average.duration} Min</span><span class="sr-only">:</span>
-        {average.value}
-      </li>
-    {/each}
-  </ul>
-</div>
+{#if $activeData.some((workout) => workout.output) && $activeWorkoutType == "Cycling"}
+  <div>
+    <h2>Average Outputs By Ride Length</h2>
+    <ul>
+      {#each $averageOutputsByDuration as average}
+        <li style="background-color:{average.color}">
+          <span>{average.duration} Min</span><span class="sr-only">:</span>
+          {average.value}
+        </li>
+      {/each}
+    </ul>
+  </div>
 {/if}
 
 <style>

@@ -1,5 +1,5 @@
 <script>
-  import { classesTakenByType } from "$lib/store/store";
+  import {classesTakenByType} from "$lib/store/store";
 </script>
 
 <section>

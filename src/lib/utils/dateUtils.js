@@ -54,4 +54,3 @@ export const isDateSameOrAfterGivenDate = (date, givenDate) => {
 export const subtractNMonthsFromDate = (date, monthsToSubtract) => {
   return dayjs(date).subtract(monthsToSubtract, "months").format("YYYY-MM-DD");
 };
-

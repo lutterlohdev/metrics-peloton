@@ -1,7 +1,7 @@
 <script>
   import LineChart from "../baseTypes/LineChart.svelte";
   import {averageResistance, averageCadence} from "$lib/store/cyclingStore";
-  import { activeData, activeWorkoutType } from "$lib/store/store";
+  import {activeData, activeWorkoutType} from "$lib/store/store";
   import {getPlotPointsByDate} from "$lib/utils/chartUtils";
 
   const getDatasets = (averageCadence, averageResistance) => {
@@ -77,21 +77,21 @@
 
 <!-- Only show for Cycling for now-->
 {#if $activeWorkoutType == "Cycling"}
-<section>
-  <div class="section-wrapper">
-    {#if isError}
-      <p>{ERROR_MESSAGE}</p>
-    {:else}
-      <h2>Average Cadence vs Resistance</h2>
-      <LineChart
-        title="Average Cadence vs Resistance"
-        {datasets}
-        isDarkMode="true"
-        bind:chartReference
-      />
-    {/if}
-  </div>
-</section>
+  <section>
+    <div class="section-wrapper">
+      {#if isError}
+        <p>{ERROR_MESSAGE}</p>
+      {:else}
+        <h2>Average Cadence vs Resistance</h2>
+        <LineChart
+          title="Average Cadence vs Resistance"
+          {datasets}
+          isDarkMode="true"
+          bind:chartReference
+        />
+      {/if}
+    </div>
+  </section>
 {/if}
 
 <style>

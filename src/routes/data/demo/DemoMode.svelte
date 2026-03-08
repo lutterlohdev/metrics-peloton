@@ -21,7 +21,7 @@
 
 <svelte:window bind:scrollY={y} />
 {#if !$csvData}
-<button class="footer-button" on:click={() => loadDemoMode()}
-  ><span class="sr-only">Activate </span>Demo Mode</button
->
+  <button class="footer-button" on:click={() => loadDemoMode()}
+    ><span class="sr-only">Activate </span>Demo Mode</button
+  >
 {/if}

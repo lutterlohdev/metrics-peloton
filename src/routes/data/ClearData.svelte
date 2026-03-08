@@ -2,7 +2,6 @@
   import {activeWorkoutType, csvData} from "$lib/store/store.js";
   import {isOptionsSidebarOpen} from "$lib/store/interactionStore.js";
 
-
   const clearData = () => {
     localStorage.clear();
     csvData.set();

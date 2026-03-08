@@ -13,7 +13,7 @@
 <section>
   <div class="section-wrapper">
     <h2>Totals</h2>
-    
+
     <div class="wrapper">
       <IconStat
         statTitle="Classes"
@@ -26,18 +26,18 @@
         iconFile="../images/stopwatch.svg"
       />
       {#if $totalDistance && $totalDistance > 0}
-      <IconStat
-        statTitle={distanceUnit == "km" ? "Kilometers" : "Miles"}
-        statNumber={formatNumberWithCommas($totalDistance)}
-        iconFile="../images/moving.svg"
-      />
+        <IconStat
+          statTitle={distanceUnit == "km" ? "Kilometers" : "Miles"}
+          statNumber={formatNumberWithCommas($totalDistance)}
+          iconFile="../images/moving.svg"
+        />
       {/if}
       {#if $totalCalories && $totalCalories > 0}
-      <IconStat
-        statTitle="Calories"
-        statNumber={formatNumberWithCommas($totalCalories)}
-        iconFile="../images/energy.svg"
-      />
+        <IconStat
+          statTitle="Calories"
+          statNumber={formatNumberWithCommas($totalCalories)}
+          iconFile="../images/energy.svg"
+        />
       {/if}
     </div>
   </div>
