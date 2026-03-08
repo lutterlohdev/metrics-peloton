@@ -1,4 +1,9 @@
-import {trimTitle, convertStringToID, removeLiveRideTitleSequence, findIndexOfTimeUnit} from "../../src/lib/utils/stringUtils";
+import {
+  trimTitle,
+  convertStringToID,
+  removeLiveRideTitleSequence,
+  findIndexOfTimeUnit
+} from "../../src/lib/utils/stringUtils";
 
 describe("trimTitle", () => {
   it('should trim "min" from the ride title', () => {
@@ -30,10 +35,18 @@ describe("convertStringToID", () => {
 
 describe("removeLiveRideTitleSequence", () => {
   it("should remove the Live ride title sequences", () => {
-    expect(removeLiveRideTitleSequence("30 min HIIT & Hills Ride: Live from Home")).toBe("30 min HIIT & Hills Ride");
-    expect(removeLiveRideTitleSequence("30 min HIIT & Hills Ride: Live From LA")).toBe("30 min HIIT & Hills Ride");
-    expect(removeLiveRideTitleSequence("30 min HIIT & Hills Ride: Live From Home")).toBe("30 min HIIT & Hills Ride");
-    expect(removeLiveRideTitleSequence("30 min HIIT & Hills Ride: From Home")).toBe("30 min HIIT & Hills Ride");
+    expect(removeLiveRideTitleSequence("30 min HIIT & Hills Ride: Live from Home")).toBe(
+      "30 min HIIT & Hills Ride"
+    );
+    expect(removeLiveRideTitleSequence("30 min HIIT & Hills Ride: Live From LA")).toBe(
+      "30 min HIIT & Hills Ride"
+    );
+    expect(removeLiveRideTitleSequence("30 min HIIT & Hills Ride: Live From Home")).toBe(
+      "30 min HIIT & Hills Ride"
+    );
+    expect(removeLiveRideTitleSequence("30 min HIIT & Hills Ride: From Home")).toBe(
+      "30 min HIIT & Hills Ride"
+    );
   });
 });
 

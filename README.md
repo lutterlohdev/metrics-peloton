@@ -23,4 +23,4 @@ npm run build
 
 ## Technical Details
 
-This project is built using the [Svelte](https://svelte.dev/) framework and relies on [ChartJS](https://www.chartjs.org/). 
+This project is built using the [Svelte](https://svelte.dev/) framework and relies on [ChartJS](https://www.chartjs.org/).

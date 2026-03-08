@@ -62,18 +62,18 @@
 </script>
 
 <!-- Only use this for data that has output -->
-{#if $activeData.some(workout => workout.output)}
-<section>
-  <div class="section-wrapper">
-    {#if isError}
-      <p>{ERROR_MESSAGE}</p>
-    {:else}
-      <h2>Output Over Time</h2>
-      <LineChart title="Output Over Time" {datasets} bind:chartReference />
-      <AverageOutputsByLength />
-    {/if}
-  </div>
-</section>
+{#if $activeData.some((workout) => workout.output)}
+  <section>
+    <div class="section-wrapper">
+      {#if isError}
+        <p>{ERROR_MESSAGE}</p>
+      {:else}
+        <h2>Output Over Time</h2>
+        <LineChart title="Output Over Time" {datasets} bind:chartReference />
+        <AverageOutputsByLength />
+      {/if}
+    </div>
+  </section>
 {/if}
 
 <style>

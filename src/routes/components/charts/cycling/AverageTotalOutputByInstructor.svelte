@@ -36,30 +36,30 @@
 </script>
 
 <!-- Only use this for data that has output -->
-{#if $activeData && $activeData.some(workout => workout.output)  && $activeWorkoutType == "Cycling"}
-<section>
-  <div class="section-wrapper">
-    <h2>Average Total Output by Instructor</h2>
-    <table cellspacing="0">
-      <thead>
-        <tr>
-          <td />
-          {#each Object.keys($averageTotalOutputByDurationAndInstructor) as duration}
-            <th>{duration} Min</th>
+{#if $activeData && $activeData.some((workout) => workout.output) && $activeWorkoutType == "Cycling"}
+  <section>
+    <div class="section-wrapper">
+      <h2>Average Total Output by Instructor</h2>
+      <table cellspacing="0">
+        <thead>
+          <tr>
+            <td />
+            {#each Object.keys($averageTotalOutputByDurationAndInstructor) as duration}
+              <th>{duration} Min</th>
+            {/each}
+          </tr>
+        </thead>
+        <tbody>
+          {#each uniqueInstructors as instructor}
+            <tr>
+              <th>{instructor}</th>
+              {@html getCells(instructor)}
+            </tr>
           {/each}
-        </tr>
-      </thead>
-      <tbody>
-      {#each uniqueInstructors as instructor}
-        <tr>
-          <th>{instructor}</th>
-          {@html getCells(instructor)}
-        </tr>
-      {/each}
-      </tbody>
-    </table>
-  </div>
-</section>
+        </tbody>
+      </table>
+    </div>
+  </section>
 {/if}
 
 <style>

@@ -7,7 +7,6 @@ export const convertStringToID = (string) => {
   return string.replace(/\s+/g, "-").toLowerCase();
 };
 
-
 /**
  * Strips title to the essential type
  * @param {string} title Workout Title
@@ -37,16 +36,16 @@ export const trimTitle = (title, removeWorkoutSuffix = false) => {
 
 /**
  * Removes text from titles like ": Live from Home" since they are inconsistent
- * @param {string} title 
+ * @param {string} title
  * @returns string
  */
 export const removeLiveRideTitleSequence = (title) => {
   return title.replace(/: Live (From Home|From LA)|: From Home/gi, "");
-}
+};
 
 /**
  * Returns the last index of either "min" or "sec"
- * @param {string} inputString 
+ * @param {string} inputString
  * @returns {number}
  */
 export const findIndexOfTimeUnit = (inputString) => {
@@ -62,20 +61,19 @@ export const findIndexOfTimeUnit = (inputString) => {
   } else {
     return Math.max(indexMin, indexSec); // Both "min" and "sec" found, return the latest index of the occurrence
   }
-}
+};
 
 export const capitalizeFirstLetter = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
-}
+};
 
 export const removeSuffixes = (title) => {
   const suffixesToRemove = ["ride", "meditation", "stretch", "strength"];
-  suffixesToRemove.forEach(suffix => {
+  suffixesToRemove.forEach((suffix) => {
     let indexOfTextToRemove = title.toLowerCase().indexOf(suffix);
     if (indexOfTextToRemove > 0 && title.length - indexOfTextToRemove == suffix.length) {
       title = title.replace(capitalizeFirstLetter(suffix), "");
     }
   });
   return title;
-}
-
+};

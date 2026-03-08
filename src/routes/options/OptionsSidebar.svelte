@@ -9,16 +9,16 @@
 
 <Sidebar bind:isOpen={$isOptionsSidebarOpen} side="right">
   <h2>Options</h2>
-      <OptionDates />
-      <form>
-        <ExcludeRideTypes />
-        <ShowSameDayWorkouts />
-      </form>
-      <ClearData />
+  <OptionDates />
+  <form>
+    <ExcludeRideTypes />
+    <ShowSameDayWorkouts />
+  </form>
+  <ClearData />
 </Sidebar>
 
 <style>
-  h2{
+  h2 {
     text-align: left;
   }
 </style>

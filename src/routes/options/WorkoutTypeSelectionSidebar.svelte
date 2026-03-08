@@ -23,9 +23,9 @@
           on:click={() => handleActiveWorkoutTypeChange(workoutType)}
           style={"background:" +
             getColorBasedOnArrayLengthAndIndex(Object.keys($filteredData).length, i)}
-          >
+        >
           {workoutType}
-          </button>
+        </button>
       {/if}
     {/each}
   </nav>
@@ -47,7 +47,7 @@
     font-size: 14px;
     margin-bottom: 11px;
     cursor: pointer;
-    transition: .5s background;
+    transition: 0.5s background;
   }
   button:hover,
   button:focus {

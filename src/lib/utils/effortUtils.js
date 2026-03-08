@@ -16,7 +16,7 @@ import {trimTitle} from "./stringUtils";
 
 export const filterByTitle = (workouts, filters) => {
   const filteredWorkouts = workouts.filter((workout) => {
-    if (!workout.title){
+    if (!workout.title) {
       return false;
     }
     let isFilteredOut = false;
@@ -27,7 +27,6 @@ export const filterByTitle = (workouts, filters) => {
       }
     });
     return !isFilteredOut;
-
   });
   return filteredWorkouts;
 };
@@ -39,11 +38,7 @@ export const filterByTitle = (workouts, filters) => {
  * @return {array} filtered data
  */
 export const filterWorkoutsByDate = (workouts, startDate, endDate) => {
-  if (
-    startDate &&
-    endDate && 
-    workouts.length > 2
-  ) {
+  if (startDate && endDate && workouts.length > 2) {
     const originalLength = workouts.length;
     let filteredWorkouts = workouts.filter((ride) => {
       return (
@@ -51,7 +46,9 @@ export const filterWorkoutsByDate = (workouts, startDate, endDate) => {
         isDateSameOrBeforeGivenDate(ride.date, endDate)
       );
     });
-    console.debug(`${filteredWorkouts.length} out of ${originalLength} workouts remain after applying date filter ${startDate}|${endDate}`);
+    console.debug(
+      `${filteredWorkouts.length} out of ${originalLength} workouts remain after applying date filter ${startDate}|${endDate}`
+    );
     return filteredWorkouts;
   }
   return workouts;
@@ -137,7 +134,7 @@ export const getHighestOutputWorkout = (workouts) => {
  * @param {array} workouts Peloton workouts data
  * @return {object} Best workout by length
  */
- export const getLongestWorkout = (workouts) => {
+export const getLongestWorkout = (workouts) => {
   if (workouts && workouts.length > 0) {
     const longestWorkoutDuration = Math.max(...workouts.map((workout) => workout.duration), 0);
     const longestWorkout = workouts.find(function (workout) {
@@ -225,10 +222,10 @@ export const filterSameDayWorkouts = (workouts) => {
       const workoutsOnSpecificDay = workouts.filter((workout) => {
         return date == workout.date;
       });
-      
+
       let bestWorkout;
-      
-      if (workoutsOnSpecificDay.some(workout => workout.output)){
+
+      if (workoutsOnSpecificDay.some((workout) => workout.output)) {
         bestWorkout = getHighestOutputWorkout(workoutsOnSpecificDay);
       } else {
         bestWorkout = getLongestWorkout(workoutsOnSpecificDay);
@@ -339,7 +336,7 @@ export const getAverageResistance = (rideData) => {
 export const getOrganizedRidesSortedByOutput = (rideData) => {
   const result = {};
 
-  Object.keys(rideData).forEach(duration => {
+  Object.keys(rideData).forEach((duration) => {
     result[duration] = sortArrayByAttributeInObject(rideData[duration], "output");
   });
   return result;
@@ -416,13 +413,13 @@ export const getAverageTotalOutputByInstructor = (rideData) => {
 export const getAverageTotalOutputByDurationAndInstructor = (rideData) => {
   const result = {};
 
-  Object.keys(rideData).forEach(duration => {
+  Object.keys(rideData).forEach((duration) => {
     result[duration] = getAverageTotalOutputByInstructor(rideData[duration]);
     // Remove empty durations
-    if (result[duration].length < 1){
+    if (result[duration].length < 1) {
       delete result[duration];
     }
-  })
+  });
 
   return result;
 };

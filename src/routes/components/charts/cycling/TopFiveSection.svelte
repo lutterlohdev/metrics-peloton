@@ -3,7 +3,7 @@
   import {organizedRidesSortedByOutput} from "$lib/store/cyclingStore";
   import TopFiveRides from "./TopFiveRides.svelte";
   import {getColorBasedOnArrayLengthAndIndex} from "$lib/utils/colorUtils";
-  import { activeData, activeWorkoutType } from "$lib/store/store";
+  import {activeData, activeWorkoutType} from "$lib/store/store";
 
   let durations = Object.keys($organizedRidesSortedByOutput).reverse();
 
@@ -15,26 +15,26 @@
 </script>
 
 <!-- Only show for active data with outputs -->
-{#if $activeData.some(workout => workout.output) && $activeWorkoutType == "Cycling"}
-<section class="top-five-container">
-  {#each durations.reverse() as duration, i}
-    <div class="top-five-card">
-      <div class="section-wrapper">
-        <h2 style="color:{getColorBasedOnArrayLengthAndIndex(durations.length, i)}">
-          Top
-          {duration}
-          Min Rides
-        </h2>
-        <div>
-          <TopFiveRides
-            rides={$organizedRidesSortedByOutput[duration].slice(0, 5)}
-            color={getColorBasedOnArrayLengthAndIndex(durations.length, i)}
-          />
+{#if $activeData.some((workout) => workout.output) && $activeWorkoutType == "Cycling"}
+  <section class="top-five-container">
+    {#each durations.reverse() as duration, i}
+      <div class="top-five-card">
+        <div class="section-wrapper">
+          <h2 style="color:{getColorBasedOnArrayLengthAndIndex(durations.length, i)}">
+            Top
+            {duration}
+            Min Rides
+          </h2>
+          <div>
+            <TopFiveRides
+              rides={$organizedRidesSortedByOutput[duration].slice(0, 5)}
+              color={getColorBasedOnArrayLengthAndIndex(durations.length, i)}
+            />
+          </div>
         </div>
       </div>
-    </div>
-  {/each}
-</section>
+    {/each}
+  </section>
 {/if}
 
 <style>

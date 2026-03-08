@@ -3,12 +3,12 @@
 </script>
 
 <div
-  class="button {$isMenuSidebarOpen ? "isOpen" : ""}"
+  class="button {$isMenuSidebarOpen ? 'isOpen' : ''}"
   role="button"
   type="button"
-  on:click={() => (isMenuSidebarOpen.set($isMenuSidebarOpen = !$isMenuSidebarOpen))}
+  on:click={() => isMenuSidebarOpen.set(($isMenuSidebarOpen = !$isMenuSidebarOpen))}
   tabindex="0"
-  on:keypress={() => (isMenuSidebarOpen.set($isMenuSidebarOpen = !$isMenuSidebarOpen))}
+  on:keypress={() => isMenuSidebarOpen.set(($isMenuSidebarOpen = !$isMenuSidebarOpen))}
 >
   <div class="line" />
   <div class="line" />

@@ -54,28 +54,28 @@
         console.error(ERROR_MESSAGE, e);
       }
     } else {
-      console.debug("Active Workout Not Supported for Instructor Classes Graph")
+      console.debug("Active Workout Not Supported for Instructor Classes Graph");
     }
   });
 </script>
 
 <!-- Show this for any workout type if data exists for that workout type-->
 {#if data}
-<section>
-  <div class="section-wrapper">
-    <div class="left">
-      <h2>Classes Taken Per Instructor</h2>
-    </div>
+  <section>
+    <div class="section-wrapper">
+      <div class="left">
+        <h2>Classes Taken Per Instructor</h2>
+      </div>
 
-    <div class="right">
-      {#if isError}
-        <p>{ERROR_MESSAGE}</p>
-      {:else}
-        <DoughnutChart title="Classes Taken Per Instructor" {datasets} bind:chartReference />
-      {/if}
+      <div class="right">
+        {#if isError}
+          <p>{ERROR_MESSAGE}</p>
+        {:else}
+          <DoughnutChart title="Classes Taken Per Instructor" {datasets} bind:chartReference />
+        {/if}
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 {/if}
 
 <style>

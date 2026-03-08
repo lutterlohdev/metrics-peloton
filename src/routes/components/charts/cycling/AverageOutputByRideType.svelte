@@ -1,23 +1,23 @@
 <script>
   import {averageOutputByRideType} from "$lib/store/cyclingStore";
-  import { activeData, activeWorkoutType } from "$lib/store/store";
+  import {activeData, activeWorkoutType} from "$lib/store/store";
 </script>
 
 <!-- Only show for active data with outputs -->
-{#if $activeData.some(workout => workout.output) && $activeWorkoutType == "Cycling"}
-<section>
-  <div class="section-wrapper">
-    <h2>Average Outputs By Ride Type</h2>
-    <ul class="list-wrapper">
-      {#each $averageOutputByRideType.slice(0, 8) as rideType}
-        <li class="chart-value">
-          {rideType.type}
-          <span>{rideType.averageOutput}</span>
-        </li>
-      {/each}
-    </ul>
-  </div>
-</section>
+{#if $activeData.some((workout) => workout.output) && $activeWorkoutType == "Cycling"}
+  <section>
+    <div class="section-wrapper">
+      <h2>Average Outputs By Ride Type</h2>
+      <ul class="list-wrapper">
+        {#each $averageOutputByRideType.slice(0, 8) as rideType}
+          <li class="chart-value">
+            {rideType.type}
+            <span>{rideType.averageOutput}</span>
+          </li>
+        {/each}
+      </ul>
+    </div>
+  </section>
 {/if}
 
 <style>
