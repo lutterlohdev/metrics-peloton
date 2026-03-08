@@ -18,7 +18,7 @@ const {
   getAverageOutputByRideType,
   getAverageOutputByInstructor
 } = require("../../src/lib/utils/effortUtils");
-import {sampleData1} from "./sampleData";
+import { sampleData1 } from "./sampleData";
 
 let sampleData;
 
@@ -98,10 +98,10 @@ describe("organizeRidesByDuration", () => {
     expect(organizeRidesByDuration([])).toMatchObject({});
   });
   it("should throw an error if data does not include duration", () => {
-    const badData = [...sampleData, {title: "30 Min I dont have a duration"}];
+    const badData = [...sampleData, { title: "30 Min I dont have a duration" }];
     expect(() => {
       organizeRidesByDuration(badData);
-    }).toThrowError();
+    }).toThrow();
   });
 });
 
@@ -128,7 +128,7 @@ describe("getHighestOutputWorkout", () => {
     expect(result).toMatchObject(sampleData[0]);
   });
   it("should return an error if input is empty", () => {
-    expect(() => getHighestOutputWorkout([])).toThrowError();
+    expect(() => getHighestOutputWorkout([])).toThrow();
   });
 });
 
@@ -175,11 +175,11 @@ describe("getAverageOutputs", () => {
 
 describe("getDatesWithMultipleWorkouts", () => {
   const data = [
-    {date: "2020-11-01"},
-    {date: "2020-11-01"},
-    {date: "2020-11-02"},
-    {date: "2020-11-02"},
-    {date: "2020-11-03"}
+    { date: "2020-11-01" },
+    { date: "2020-11-01" },
+    { date: "2020-11-02" },
+    { date: "2020-11-02" },
+    { date: "2020-11-03" }
   ];
   it("should return dates with multiple rides", () => {
     const result = getDatesWithMultipleWorkouts(data);
@@ -249,7 +249,7 @@ describe("getClassesTakenByInstructor", () => {
     });
   });
   it("should log an error and return an empty string if there is an error", () => {
-    const badData = sampleData.concat().push({notInstructor: "bad data"});
+    const badData = sampleData.concat().push({ notInstructor: "bad data" });
     console.error = jest.fn();
     expect(getClassesTakenByInstructor(badData)).toStrictEqual([]);
     expect(console.error).toHaveBeenCalled();
@@ -259,9 +259,9 @@ describe("getClassesTakenByInstructor", () => {
 describe("getAverageCadence", () => {
   it("should return an array of average cadences with corresponding date", () => {
     const data = [
-      {averageCadence: 100, date: "2020-01-01"},
-      {averageCadence: 100, date: "2020-01-01"},
-      {averageCadence: 100, date: "2020-01-01"}
+      { averageCadence: 100, date: "2020-01-01" },
+      { averageCadence: 100, date: "2020-01-01" },
+      { averageCadence: 100, date: "2020-01-01" }
     ];
     const result = getAverageCadence(data);
     expect(result).toHaveLength(3);
@@ -277,9 +277,9 @@ describe("getAverageCadence", () => {
 describe("getAverageResistance", () => {
   it("should return an array of average Resistances with corresponding date", () => {
     const data = [
-      {averageResistance: 100, date: "2020-01-01"},
-      {averageResistance: 100, date: "2020-01-01"},
-      {averageResistance: 100, date: "2020-01-01"}
+      { averageResistance: 100, date: "2020-01-01" },
+      { averageResistance: 100, date: "2020-01-01" },
+      { averageResistance: 100, date: "2020-01-01" }
     ];
     const result = getAverageResistance(data);
     expect(result).toHaveLength(3);
@@ -352,9 +352,9 @@ describe("getLongestWorkout", () => {
   it("should throw an error if workouts is undefined", () => {
     expect(() => {
       getLongestWorkout(undefined);
-    }).toThrowError();
+    }).toThrow();
     expect(() => {
       getLongestWorkout([]);
-    }).toThrowError();
+    }).toThrow();
   });
 });

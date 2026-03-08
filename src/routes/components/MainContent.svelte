@@ -45,6 +45,6 @@
 <style>
   main {
     margin: 0 auto;
-    padding-top: 50px;
+    padding-top: 85px;
   }
 </style>

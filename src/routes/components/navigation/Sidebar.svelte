@@ -8,12 +8,16 @@
 </script>
 
 {#if isOpen}
-  <aside transition:fly={{x: side == "right" ? 200 : -200, duration: 500}} class:open={isOpen} class:left={side == "left"}>
+  <aside
+    transition:fly={{x: side == "right" ? 200 : -200, duration: 500}}
+    class:open={isOpen}
+    class:left={side == "left"}
+  >
     <div>
       <slot></slot>
     </div>
   </aside>
-  <div role="none" class="overlay" on:click={handleSidebar} on:keypress={handleSidebar} />
+  <div role="none" class="overlay" on:click={handleSidebar} on:keypress={handleSidebar}></div>
 {/if}
 
 <style>
@@ -30,12 +34,12 @@
     left: 70vw;
     box-shadow: -1px 0 2px #777;
   }
-  .open.left{
+  .open.left {
     left: 0;
   }
   aside > div {
     padding: 20px;
-    padding-top: 72px;
+    padding-top: 107px;
   }
   .overlay {
     position: fixed;
