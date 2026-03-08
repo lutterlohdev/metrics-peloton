@@ -11,21 +11,21 @@ describe("createPlotPoint", () => {
       y: "second",
       title: "title"
     });
-    expect(createPlotPoint({a: "a"}, {b: "b"})).toStrictEqual({
-      x: {a: "a"},
-      y: {b: "b"},
+    expect(createPlotPoint({ a: "a" }, { b: "b" })).toStrictEqual({
+      x: { a: "a" },
+      y: { b: "b" },
       title: undefined
     });
-    expect(createPlotPoint(0, 0)).toStrictEqual({x: 0, y: 0, title: undefined});
+    expect(createPlotPoint(0, 0)).toStrictEqual({ x: 0, y: 0, title: undefined });
   });
 });
 
 describe("getPlotPointsByDate", () => {
   it("should return plot points given the data", () => {
     const sampleData = [
-      {output: 100, date: "2020-09-25"},
-      {output: 100, date: "2020-09-25"},
-      {output: 100, date: "2020-09-25"}
+      { output: 100, date: "2020-09-25" },
+      { output: 100, date: "2020-09-25" },
+      { output: 100, date: "2020-09-25" }
     ];
 
     const yAxis = "output";
@@ -40,9 +40,9 @@ describe("getPlotPointsByDate", () => {
 
   it("should return plot points given the data", () => {
     const sampleData = [
-      {average: 100, createdAt: "2020-09-25"},
-      {average: 100, createdAt: "2020-09-25"},
-      {average: 100, createdAt: "2020-09-25"}
+      { average: 100, createdAt: "2020-09-25" },
+      { average: 100, createdAt: "2020-09-25" },
+      { average: 100, createdAt: "2020-09-25" }
     ];
 
     const yAxis = "average";
@@ -57,15 +57,15 @@ describe("getPlotPointsByDate", () => {
 
   it("should throw an error if data is malformed", () => {
     const sampleData = [
-      {average: 100, createdAt: "2020-09-25"},
-      {average: 100, createdAt: "2020-09-25"},
-      {average: 100, createdAt: "2020-09-25"}
+      { average: 100, createdAt: "2020-09-25" },
+      { average: 100, createdAt: "2020-09-25" },
+      { average: 100, createdAt: "2020-09-25" }
     ];
 
     console.error = jest.fn();
     expect(() => {
       getPlotPointsByDate(sampleData, "output", "date");
-    }).toThrowError();
+    }).toThrow();
     expect(console.error).toHaveBeenCalled();
   });
 });
