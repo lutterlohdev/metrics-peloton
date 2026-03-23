@@ -25,7 +25,7 @@
     "@sveltejs/adapter-auto": "^7.0.1",
     "@sveltejs/adapter-static": "3.0.10",
     "@sveltejs/kit": "^2.55.0",
-    "@sveltejs/vite-plugin-svelte": "^6.2.4",
+    "@sveltejs/vite-plugin-svelte": "^7.0.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/svelte": "^5.3.1",
     "babel-jest": "^30.3.0",
