@@ -35,7 +35,7 @@
     "globals": "^17.4.0",
     "husky": "^9.1.7",
     "jest": "^30.3.0",
-    "prettier": "^3.8.1",
+    "prettier": "^3.8.2",
     "prettier-plugin-svelte": "3.5.1",
     "svelte": "5.55.1",
     "svelte-jester": "^5.0.0",
