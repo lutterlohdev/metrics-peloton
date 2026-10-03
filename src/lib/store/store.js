@@ -110,7 +110,7 @@ export const activeData = derived(
   [filteredData, activeWorkoutType],
   ([$filteredData, $activeWorkoutType]) => {
     console.debug("Active Data for " + $activeWorkoutType, $filteredData[$activeWorkoutType]);
-    return $filteredData[$activeWorkoutType];
+    return $filteredData[$activeWorkoutType] || [];
   }
 );
 
@@ -120,7 +120,7 @@ export const activeData = derived(
 export const workoutTypes = derived(
   [mappedCSVData, activeWorkoutType],
   ([$mappedCSVData, $activeWorkoutType]) => {
-    return getUniqueWorkoutTypes($mappedCSVData[$activeWorkoutType]);
+    return getUniqueWorkoutTypes($mappedCSVData[$activeWorkoutType] || []);
   }
 );
 

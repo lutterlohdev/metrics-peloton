@@ -3,9 +3,9 @@ import {
   sortArrayByAttributeInObject,
   getUniqueValuesFromDataArrayByAttribute
 } from "./dataUtils";
-import { getColorBasedOnArrayLengthAndIndex } from "./colorUtils";
-import { isDateSameOrAfterGivenDate, isDateSameOrBeforeGivenDate } from "./dateUtils";
-import { trimTitle } from "./stringUtils";
+import {getColorBasedOnArrayLengthAndIndex} from "./colorUtils";
+import {isDateSameOrAfterGivenDate, isDateSameOrBeforeGivenDate} from "./dateUtils";
+import {trimTitle} from "./stringUtils";
 
 /**
  * Filters Peloton Workout data by the given filters on titles
@@ -31,11 +31,7 @@ export const filterByTitle = (workouts, filters) => {
  * @return {array} filtered data
  */
 export const filterWorkoutsByDate = (workouts, startDate, endDate) => {
-  if (
-    startDate &&
-    endDate &&
-    workouts.length > 2
-  ) {
+  if (startDate && endDate && workouts.length > 2) {
     const originalLength = workouts.length;
     let filteredWorkouts = workouts.filter((ride) => {
       return (
@@ -58,7 +54,13 @@ export const filterWorkoutsByDate = (workouts, startDate, endDate) => {
  * @return {array} Array of ride objects that begin with the given duration
  */
 export const getRidesByDuration = (rideData, duration) => {
-  return rideData.filter((ride) => ride.title.startsWith(duration));
+  if (!rideData || !Array.isArray(rideData)) return [];
+  return rideData.filter(
+    (ride) =>
+      ride &&
+      (ride.duration === Number(duration) ||
+        (ride.title && ride.title.startsWith(duration.toString())))
+  );
 };
 
 /**
@@ -67,19 +69,19 @@ export const getRidesByDuration = (rideData, duration) => {
  * @return {object} An object with keys that match the unique ride durations
  */
 export const organizeRidesByDuration = (rideData) => {
-  const uniqueRideDurations = [
-    ...new Set(
-      rideData.map((ride) => {
-        if (ride.duration) {
-          return ride.duration;
-        }
-        throw new Error("One or more rides did not include duration.");
-      })
-    )
-  ];
+  if (!rideData || !Array.isArray(rideData)) return {};
+  const validRides = rideData.filter((ride) => {
+    if (!ride) return false;
+    if (ride.duration === undefined || ride.duration === null || isNaN(ride.duration)) {
+      throw new Error("One or more rides did not include duration.");
+    }
+    return ride.duration > 0;
+  });
+
+  const uniqueRideDurations = [...new Set(validRides.map((ride) => ride.duration))];
 
   const rides = uniqueRideDurations.reduce((accumulator, duration) => {
-    accumulator[duration.toString()] = getRidesByDuration(rideData, duration);
+    accumulator[duration.toString()] = getRidesByDuration(validRides, duration);
     return accumulator;
   }, {});
 
@@ -162,8 +164,10 @@ export const energy = {
  * @return {array}  Average Outputs
  */
 export const getAverageOutputs = (rideData, units = energy.KILOJOULES) => {
+  if (!rideData || !Array.isArray(rideData)) return [];
   return rideData.map((ride) => {
-    const averageOutputPerMinute = ride.output / ride.duration;
+    const duration = ride.duration || 1;
+    const averageOutputPerMinute = ride.output / duration;
     return {
       average: units == energy.KILOJOULES ? averageOutputPerMinute : ride.averageOutput,
       title: ride.title,
@@ -202,7 +206,7 @@ export const filterSameDayWorkouts = (workouts) => {
 
       let bestWorkout;
 
-      if (workoutsOnSpecificDay.some(workout => workout.output)) {
+      if (workoutsOnSpecificDay.some((workout) => workout.output)) {
         bestWorkout = getHighestOutputWorkout(workoutsOnSpecificDay);
       } else {
         bestWorkout = getLongestWorkout(workoutsOnSpecificDay);

@@ -96,7 +96,12 @@ export const mapCSVData = (data, distanceUnit = "mi") => {
 
       const workout = {};
       workout.instructor = effort["Instructor Name"] ? effort["Instructor Name"] : "None/Self";
-      workout.duration = parseInt(effort["Length (minutes)"]);
+      const durationParsed = parseInt(effort["Length (minutes)"]);
+      const duration = isNaN(durationParsed) ? 0 : durationParsed;
+      if (duration <= 0) {
+        return;
+      }
+      workout.duration = duration;
       workout.type = effort["Type"] ? effort["Type"] : "Other (Lanebreak, etc)"; // Support for Lanebreak, etc
       workout.title = effort["Title"];
       workout.date = timestamp.substr(0, timestamp.indexOf(" "));
@@ -141,9 +146,11 @@ function enhanceCyclingData(effort, distanceUnit, workout) {
     workout.output = output;
     workout.averageOutput = averageWatts;
     workout.averageCadence = effort["Avg. Cadence (RPM)"];
-    workout.averageResistance = effort["Avg. Resistance"].replace("%", "");
+    workout.averageResistance = effort["Avg. Resistance"]
+      ? effort["Avg. Resistance"].replace("%", "")
+      : "0";
     workout.distance = distance;
-    workout.calories = parseFloat(effort["Calories Burned"]);
+    workout.calories = parseFloat(effort["Calories Burned"]) || 0;
   }
   return workout;
 }

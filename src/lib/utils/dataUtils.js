@@ -5,7 +5,7 @@
  * @return {number} Average
  */
 export const getAverageFromArray = (array, key) => {
-  if (array.length === 0) {
+  if (!array || array.length === 0) {
     return 0;
   }
   const sum = array.reduce((accumulator, data) => {
@@ -22,6 +22,9 @@ export const getAverageFromArray = (array, key) => {
  * @return {array}
  */
 export const sortArrayByAttributeInObject = (array, attribute) => {
+  if (!array || !Array.isArray(array)) {
+    return [];
+  }
   // Concat so we dont change the original
   return array
     .concat()
@@ -39,6 +42,9 @@ export const sortArrayByAttributeInObject = (array, attribute) => {
  * @return {array} Sliced Array
  */
 export const sliceArrayByGivenMax = (array, max) => {
+  if (!array || !Array.isArray(array)) {
+    return [];
+  }
   const arrayLength = array.length;
 
   if (max < arrayLength) {
@@ -55,6 +61,9 @@ export const sliceArrayByGivenMax = (array, max) => {
  * @return {array} Unique Values
  */
 export const getUniqueValuesFromDataArrayByAttribute = (array, attribute) => {
+  if (array == null) {
+    return [];
+  }
   const values = [
     ...new Set(
       array
@@ -81,7 +90,7 @@ export const getUniqueValuesFromDataArrayByAttribute = (array, attribute) => {
  * @return {number} Sum
  */
 export const getTotalByAttribute = (array, key) => {
-  if (!array) {
+  if (!array || !Array.isArray(array)) {
     return 0;
   }
   const sum = array.reduce((accumulator, element) => {
