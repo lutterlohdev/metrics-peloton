@@ -1,8 +1,8 @@
 <script>
-  import {filteredData, activeWorkoutType} from "$lib/store/store.js";
-  import {isMenuSidebarOpen} from "$lib/store/interactionStore.js";
+  import {filteredData, activeWorkoutType} from "#lib/store/store.js";
+  import {isMenuSidebarOpen} from "#lib/store/interactionStore.js";
   import Sidebar from "../components/navigation/Sidebar.svelte";
-  import {getColorBasedOnArrayLengthAndIndex} from "$lib/utils/colorUtils.js";
+  import {getColorBasedOnArrayLengthAndIndex} from "#lib/utils/colorUtils.js";
 
   const handleActiveWorkoutTypeChange = (type) => {
     activeWorkoutType.set(type);

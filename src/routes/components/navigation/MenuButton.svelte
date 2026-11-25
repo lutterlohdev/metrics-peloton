@@ -1,5 +1,5 @@
 <script>
-  import {isMenuSidebarOpen} from "$lib/store/interactionStore.js";
+  import {isMenuSidebarOpen} from "#lib/store/interactionStore.js";
 </script>
 
 <div

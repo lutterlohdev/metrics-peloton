@@ -1,5 +1,5 @@
 <script>
-  import {dateFilter} from "$lib/store/store.js";
+  import {dateFilter} from "#lib/store/store.js";
 
   let startDate = $dateFilter.startDate;
   let endDate = $dateFilter.endDate;

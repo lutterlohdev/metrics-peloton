@@ -1,5 +1,5 @@
 <script>
-  import {showSameDayWorkouts} from "$lib/store/store.js";
+  import {showSameDayWorkouts} from "#lib/store/store.js";
 </script>
 
 <div>

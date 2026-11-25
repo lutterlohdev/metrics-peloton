@@ -3,16 +3,18 @@
   import MenuButton from "./MenuButton.svelte";
   import OptionsSidebar from "../../options/OptionsSidebar.svelte";
   import MenuSidebar from "../../options/WorkoutTypeSelectionSidebar.svelte";
-  import {activeWorkoutType, csvData, dateFilter} from "$lib/store/store";
-  import {getFriendlyDate} from "$lib/utils/dateUtils";
+  import {activeWorkoutType, csvData, dateFilter} from "#lib/store/store";
+  import {getFriendlyDate} from "#lib/utils/dateUtils";
 </script>
 
 <div class="tread-banner">
   Looking for a similar experience for your Peloton Tread Metrics? Visit <a
     href="https://tread.lutterloh.dev"
     target="_blank"
-    rel="noopener noreferrer">Peloton Tread Metrics</a
+    rel="noopener noreferrer"
   >
+    Peloton Tread Metrics
+  </a>
 </div>
 <header>
   <div>

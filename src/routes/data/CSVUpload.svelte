@@ -1,7 +1,7 @@
 <script>
   import {onMount} from "svelte";
-  import {csvData, isError, distanceUnit, activeWorkoutType} from "$lib/store/store.js";
-  import {csvToJson, getDistanceUnit, validateCSV} from "$lib/utils/fileUtils.js";
+  import {csvData, isError, distanceUnit, activeWorkoutType} from "#lib/store/store.js";
+  import {csvToJson, getDistanceUnit, validateCSV} from "#lib/utils/fileUtils.js";
 
   let files;
   // let errorStatus = false;
@@ -54,9 +54,9 @@
       <ol>
         <li>
           Download your Workout CSV from your
-          <a target="_blank" rel="noopener" href="https://members.onepeloton.com/profile/workouts"
-            >Peloton profile</a
-          > from a browser. It's not available via the app.
+          <a target="_blank" rel="noopener" href="https://members.onepeloton.com/profile/workouts">
+            Peloton profile
+          </a> from a browser. It's not available via the app.
         </li>
         <li>Upload the CSV file</li>
       </ol>

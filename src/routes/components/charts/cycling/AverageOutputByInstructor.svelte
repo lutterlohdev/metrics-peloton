@@ -1,7 +1,7 @@
 <script>
   import PolarArea from "../baseTypes/PolarArea.svelte";
-  import {averageOutputByInstructor} from "$lib/store/cyclingStore";
-  import {getColorArrayBasedOnLength} from "$lib/utils/colorUtils";
+  import {averageOutputByInstructor} from "#lib/store/cyclingStore";
+  import {getColorArrayBasedOnLength} from "#lib/utils/colorUtils";
 
   const getOutputs = (data) => {
     return data.map((item) => {

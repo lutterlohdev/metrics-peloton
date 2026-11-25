@@ -1,8 +1,8 @@
 <script>
   import LineChart from "../baseTypes/LineChart.svelte";
-  import {ftpAverageOutputs} from "$lib/store/cyclingStore";
-  import {getReadableDate} from "$lib/utils/dateUtils";
-  import {createPlotPoint, calculateFTP} from "$lib/utils/chartUtils";
+  import {ftpAverageOutputs} from "#lib/store/cyclingStore";
+  import {getReadableDate} from "#lib/utils/dateUtils";
+  import {createPlotPoint, calculateFTP} from "#lib/utils/chartUtils";
 
   const getPlotPoints = (data) => {
     return data.map((ride) => {

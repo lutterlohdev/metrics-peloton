@@ -1,8 +1,8 @@
 <script>
   import LineChart from "../baseTypes/LineChart.svelte";
-  import {averageOutputs} from "$lib/store/cyclingStore";
-  import {activeWorkoutType} from "$lib/store/store";
-  import {getPlotPointsByDate} from "$lib/utils/chartUtils";
+  import {averageOutputs} from "#lib/store/cyclingStore";
+  import {activeWorkoutType} from "#lib/store/store";
+  import {getPlotPointsByDate} from "#lib/utils/chartUtils";
 
   const CHART_TITLE = "Average Output Per Minute";
   const getDatasets = (data) => {

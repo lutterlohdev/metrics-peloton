@@ -7,7 +7,7 @@
   // import AverageOutputByInstructor from "../charts/charts/AverageOutputByInstructor.svelte";
   import ClassesTakenByInstructor from "./charts/general/ClassesTakenByInstructor.svelte";
   import ErrorMessage from "./messaging/ErrorMessage.svelte";
-  import {isError, csvData} from "$lib/store/store.js";
+  import {isError, csvData} from "#lib/store/store.js";
   import TopFiveSection from "./charts/cycling/TopFiveSection.svelte";
   import TotalsSection from "./charts/totals/TotalsSection.svelte";
   import InfoMessage from "./messaging/InfoMessage.svelte";
@@ -35,9 +35,9 @@
     <AverageOutputByRideType />
     <TopFiveSection />
   {:else}
-    <InfoMessage
-      >Upload your Peloton rides to see your output over time, averages, top rides, and more!</InfoMessage
-    >
+    <InfoMessage>
+      Upload your Peloton rides to see your output over time, averages, top rides, and more!
+    </InfoMessage>
     <CSVUpload />
   {/if}
 </main>

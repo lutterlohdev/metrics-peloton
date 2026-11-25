@@ -3,7 +3,7 @@
   import Chart from "chart.js/auto";
   import "chartjs-adapter-moment";
   import chartTrendline from "chartjs-plugin-trendline";
-  import {convertStringToID} from "$lib/utils/stringUtils";
+  import {convertStringToID} from "#lib/utils/stringUtils";
 
   export let title;
   export let datasets;

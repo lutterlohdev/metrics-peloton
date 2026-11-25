@@ -9,7 +9,7 @@ import {
   getAverageOutputByRideType,
   getAverageOutputByInstructor,
   getAverageTotalOutputByDurationAndInstructor
-} from "$lib/utils/effortUtils";
+} from "#lib/utils/effortUtils";
 import {filteredData, isError} from "./store";
 
 /**

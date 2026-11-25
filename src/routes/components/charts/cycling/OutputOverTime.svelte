@@ -1,10 +1,10 @@
 <script>
   import LineChart from "../baseTypes/LineChart.svelte";
-  import {organizedRidesByDuration} from "$lib/store/cyclingStore";
-  import {getPlotPointsByDate} from "$lib/utils/chartUtils";
+  import {organizedRidesByDuration} from "#lib/store/cyclingStore";
+  import {getPlotPointsByDate} from "#lib/utils/chartUtils";
   import AverageOutputsByLength from "./AverageOutputByLength.svelte";
-  import {getColorBasedOnArrayLengthAndIndex} from "$lib/utils/colorUtils";
-  import {activeData} from "$lib/store/store.js";
+  import {getColorBasedOnArrayLengthAndIndex} from "#lib/utils/colorUtils";
+  import {activeData} from "#lib/store/store.js";
 
   const getDatasets = (ridesByDuration) => {
     const datasets = [];
