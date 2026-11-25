@@ -1,8 +1,8 @@
 <script>
   import LineChart from "../baseTypes/LineChart.svelte";
-  import {averageResistance, averageCadence} from "$lib/store/cyclingStore";
-  import {activeData, activeWorkoutType} from "$lib/store/store";
-  import {getPlotPointsByDate} from "$lib/utils/chartUtils";
+  import {averageResistance, averageCadence} from "#lib/store/cyclingStore";
+  import {activeData, activeWorkoutType} from "#lib/store/store";
+  import {getPlotPointsByDate} from "#lib/utils/chartUtils";
 
   const getDatasets = (averageCadence, averageResistance) => {
     const cadenceData = getPlotPointsByDate(averageCadence, "average", "createdAt");

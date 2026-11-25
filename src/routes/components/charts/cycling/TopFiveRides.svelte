@@ -1,6 +1,6 @@
 <script>
   import ProgressBar from "../baseTypes/ProgressBar.svelte";
-  import {trimTitle} from "$lib/utils/stringUtils";
+  import {trimTitle} from "#lib/utils/stringUtils";
   export let rides;
   export let color;
 </script>

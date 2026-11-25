@@ -1,18 +1,18 @@
 import {writable, derived} from "svelte/store";
-import {mapCSVData} from "$lib/utils/fileUtils";
-import {subtractNMonthsFromDate, getReadableDate} from "$lib/utils/dateUtils";
+import {mapCSVData} from "#lib/utils/fileUtils";
+import {subtractNMonthsFromDate, getReadableDate} from "#lib/utils/dateUtils";
 import {
   getUniqueValuesFromDataArrayByAttribute,
   sortArrayByAttributeInObject
-} from "$lib/utils/dataUtils";
+} from "#lib/utils/dataUtils";
 import {
   filterSameDayWorkouts,
   getClassesTakenByInstructor,
   filterWorkoutsByDate,
   filterByTitle,
   getUniqueWorkoutTypes
-} from "$lib/utils/effortUtils";
-import {getTotalByAttribute} from "$lib/utils/dataUtils";
+} from "#lib/utils/effortUtils";
+import {getTotalByAttribute} from "#lib/utils/dataUtils";
 
 /**
  * Store boolean for whether or not an error has occurred.

@@ -5,8 +5,8 @@
     totalMinutes,
     distanceUnit,
     totalDistance
-  } from "$lib/store/store";
-  import {formatNumberWithCommas} from "$lib/utils/numberUtils";
+  } from "#lib/store/store";
+  import {formatNumberWithCommas} from "#lib/utils/numberUtils";
   import IconStat from "./IconStat.svelte";
 </script>
 

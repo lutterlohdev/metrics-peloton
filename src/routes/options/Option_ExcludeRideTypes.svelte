@@ -1,5 +1,5 @@
 <script>
-  import {workoutTypes, titleFilters} from "$lib/store/store.js";
+  import {workoutTypes, titleFilters} from "#lib/store/store.js";
 
   const handleChange = (filter, value) => {
     if (value) {

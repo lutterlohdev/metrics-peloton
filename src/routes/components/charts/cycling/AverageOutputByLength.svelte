@@ -1,6 +1,6 @@
 <script>
-  import {averageOutputsByDuration} from "$lib/store/cyclingStore";
-  import {activeData, activeWorkoutType} from "$lib/store/store.js";
+  import {averageOutputsByDuration} from "#lib/store/cyclingStore";
+  import {activeData, activeWorkoutType} from "#lib/store/store.js";
 </script>
 
 <!-- Only use this for data that has output -->

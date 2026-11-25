@@ -1,9 +1,9 @@
 <script>
   import {onMount} from "svelte";
-  import {organizedRidesSortedByOutput} from "$lib/store/cyclingStore";
+  import {organizedRidesSortedByOutput} from "#lib/store/cyclingStore";
   import TopFiveRides from "./TopFiveRides.svelte";
-  import {getColorBasedOnArrayLengthAndIndex} from "$lib/utils/colorUtils";
-  import {activeData, activeWorkoutType} from "$lib/store/store";
+  import {getColorBasedOnArrayLengthAndIndex} from "#lib/utils/colorUtils";
+  import {activeData, activeWorkoutType} from "#lib/store/store";
 
   let durations = Object.keys($organizedRidesSortedByOutput).reverse();
 

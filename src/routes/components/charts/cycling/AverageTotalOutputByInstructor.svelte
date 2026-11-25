@@ -1,8 +1,8 @@
 <script>
-  import {averageTotalOutputByDurationAndInstructor, cyclingData} from "$lib/store/cyclingStore";
-  import {getColorBasedOnArrayLengthAndIndex, getOpacityByIndex} from "$lib/utils/colorUtils";
-  import {getUniqueValuesFromDataArrayByAttribute} from "$lib/utils/dataUtils.js";
-  import {activeData, activeWorkoutType} from "$lib/store/store.js";
+  import {averageTotalOutputByDurationAndInstructor, cyclingData} from "#lib/store/cyclingStore";
+  import {getColorBasedOnArrayLengthAndIndex, getOpacityByIndex} from "#lib/utils/colorUtils";
+  import {getUniqueValuesFromDataArrayByAttribute} from "#lib/utils/dataUtils.js";
+  import {activeData, activeWorkoutType} from "#lib/store/store.js";
 
   const uniqueInstructors = getUniqueValuesFromDataArrayByAttribute($cyclingData, "instructor");
 

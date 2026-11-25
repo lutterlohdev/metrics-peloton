@@ -1,6 +1,6 @@
 <script>
-  import {averageOutputByRideType} from "$lib/store/cyclingStore";
-  import {activeData, activeWorkoutType} from "$lib/store/store";
+  import {averageOutputByRideType} from "#lib/store/cyclingStore";
+  import {activeData, activeWorkoutType} from "#lib/store/store";
 </script>
 
 <!-- Only show for active data with outputs -->

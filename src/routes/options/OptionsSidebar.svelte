@@ -4,7 +4,7 @@
   import ShowSameDayWorkouts from "./Option_ShowSameDayWorkouts.svelte";
   import OptionDates from "./Option_Dates.svelte";
   import ClearData from "../data/ClearData.svelte";
-  import {isOptionsSidebarOpen} from "$lib/store/interactionStore";
+  import {isOptionsSidebarOpen} from "#lib/store/interactionStore";
 </script>
 
 <Sidebar bind:isOpen={$isOptionsSidebarOpen} side="right">

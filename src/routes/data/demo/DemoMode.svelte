@@ -1,5 +1,5 @@
 <script>
-  import {csvData} from "$lib/store/store.js";
+  import {csvData} from "#lib/store/store.js";
   import demoData from "./demoData.json";
 
   let y = 0;
@@ -21,7 +21,7 @@
 
 <svelte:window bind:scrollY={y} />
 {#if !$csvData}
-  <button class="footer-button" on:click={() => loadDemoMode()}
-    ><span class="sr-only">Activate </span>Demo Mode</button
-  >
+  <button class="footer-button" on:click={() => loadDemoMode()}>
+    <span class="sr-only">Activate </span>Demo Mode
+  </button>
 {/if}
